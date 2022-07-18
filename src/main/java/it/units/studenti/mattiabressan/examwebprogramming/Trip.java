@@ -8,5 +8,5 @@ public class Trip {
         this.id = id;
         this.name = name;
     }
-    
+
 }
