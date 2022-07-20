@@ -1,11 +1,11 @@
-package it.units.studenti.mattiabressan.examwebprogramming;
+package it.units.studenti.mattiabressan.examwebprogramming.rest.restapi;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.google.gson.Gson;
-
+import it.units.studenti.mattiabressan.examwebprogramming.rest.model.Trip;
 import java.util.ArrayList;
 import java.util.List;
 

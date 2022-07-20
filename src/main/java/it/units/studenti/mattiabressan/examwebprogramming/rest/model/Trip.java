@@ -1,4 +1,4 @@
-package it.units.studenti.mattiabressan.examwebprogramming;
+package it.units.studenti.mattiabressan.examwebprogramming.rest.model;
 
 public class Trip {
     private final int id;
