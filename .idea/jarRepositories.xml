@@ -26,5 +26,10 @@
       <option name="name" value="ICM Repository" />
       <option name="url" value="https://maven.icm.edu.pl/artifactory/repo/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven geomajas" />
+      <option name="name" value="maven geomajas Repository" />
+      <option name="url" value="https://maven.geomajas.org/" />
+    </remote-repository>
   </component>
 </project>

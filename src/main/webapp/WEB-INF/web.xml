@@ -4,12 +4,7 @@
 
 <web-app>
     <display-name>Archetype Created Web Application</display-name>
-
-
-
-
-
-   <!-- servlet -->
+    <!-- servlet -->
     <servlet>
         <servlet-name>JerseyRESTService</servlet-name>
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>

@@ -14,12 +14,16 @@ public class TripResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getBooks() {
+        System.out.println("I am here");
         Trip t1 = new Trip(1, "mario");
         List<Trip> trips=new ArrayList<Trip>();
         trips.add(t1);
         trips.add(new Trip(3, "pippo"));
         Gson gson = new Gson();
+        //entityManager.persist(phone);
+
         return Response.ok(gson.toJson(trips)).build();
+
 
     }
 
