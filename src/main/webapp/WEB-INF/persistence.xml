@@ -6,7 +6,7 @@
 >
     <persistence-unit name="jpa-example">
         <!--persistence-unit name="jpa-tutorial"-->
-        <class>it.units.studenti.mattiabressan.examwebprogramming.rest.model.Trip</class>
+<!--        <class>it.units.studenti.mattiabressan.examwebprogramming.rest.model.Trip</class>-->
 
         <!--
         <jar-file>hibernate-and-jpa-entities.jar</jar-file>
