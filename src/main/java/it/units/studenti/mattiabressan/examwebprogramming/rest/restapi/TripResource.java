@@ -1,45 +1,54 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.restapi;
 
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.google.gson.Gson;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.model.Trip;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.model.TripDto;
-
-import java.util.ArrayList;
-import java.util.List;
+//import com.google.gson.Gson;
+//import it.units.studenti.mattiabressan.examwebprogramming.rest.model.PersistenceManager;
+//import it.units.studenti.mattiabressan.examwebprogramming.rest.model.Trip;
+//import it.units.studenti.mattiabressan.examwebprogramming.rest.model.TripDto;
+//import jakarta.persistence.EntityManager;
+//import jakarta.persistence.criteria.CriteriaBuilder;
+//import jakarta.persistence.criteria.CriteriaQuery;
+//import jakarta.persistence.criteria.Root;
+//
+//import java.util.ArrayList;
+//import java.util.List;
 
 @Path("/trips")
 public class TripResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getBooks() {
-
+    public Response getTrips() {
+    /*
         System.out.println("I am here");
         Trip t1 = new Trip(1, "mario");
+        Gson gson = new Gson();
         /*List<Trip> trips=new ArrayList<Trip>();
         trips.add(t1);
         trips.add(new Trip(3, "pippo"));
-        Gson gson = new Gson();
+
         //entityManager.persist(phone);
-         */
-        TripDto tripDto = new TripDto();
-        Trip trip = new Trip(1,"mads");
-        tripDto.saveStudent(trip);
 
-        List<Student> students = studentDao.getStudents();
-        students.forEach(s - > System.out.println(s.getFirstName()));
-        return Response.ok(gson.toJson(trips)).build();
+        EntityManager entityManager = PersistenceManager.getEntityManager();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Trip> criteriaQuery = criteriaBuilder.createQuery(Trip.class);
+        List<Trip> trips = entityManager.createQuery(criteriaQuery).getResultList();
+        for (Player player : players) {
+            System.out.println(player);
+        }
 
+        return Response.ok(gson.toJson(trips)).build();*/
 
+        return Response.ok("gson.toJson(trips)").build();
     }
-
+/*
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getBook(@PathParam("id") int id) {
+    public Response getTrip(@PathParam("id") int id) {
         return Response.ok(new Trip(1, "mario")).build();
 
     }
@@ -47,12 +56,12 @@ public class TripResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response setBook(String bookJsonString) {
+    public Response setTrip(String bookJsonString) {
         //Gson gson = new Gson();
         //Book book = gson.fromJson(bookJsonString, Book.class);
         //MongoDBWrapper.getInstance().addBook(book);
         //return Response.status(201).entity(gson.toJson(book)).build();
         return Response.ok("sda").build();
     }
-
+*/
 }

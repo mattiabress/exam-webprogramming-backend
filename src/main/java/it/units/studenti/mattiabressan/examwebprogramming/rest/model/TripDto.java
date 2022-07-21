@@ -1,5 +1,7 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.model;
 
+import jakarta.transaction.Transaction;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -11,6 +13,7 @@ public class TripDto implements Serializable {
         this.id = id;
         this.name = name;
     }
+
 
     public int getId() {
         return id;
