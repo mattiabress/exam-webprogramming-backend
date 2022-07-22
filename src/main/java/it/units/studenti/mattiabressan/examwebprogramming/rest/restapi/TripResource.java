@@ -1,63 +1,39 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.restapi;
 
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import com.google.gson.Gson;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.model.PersistenceManager;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.model.Trip;
-//import it.units.studenti.mattiabressan.examwebprogramming.rest.model.TripDto;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-//import java.util.ArrayList;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 @Path("/trips")
 public class TripResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTrips() {
-    /*
-        System.out.println("I am here");
-        Trip t1 = new Trip(1, "mario");
-
-        /*List<Trip> trips=new ArrayList<Trip>();
-        trips.add(t1);
-        trips.add(new Trip(3, "pippo"));
-
-        //entityManager.persist(phone);
-            */
         Gson gson = new Gson();
-        /*
-        EntityManager entityManager = PersistenceManager.getEntityManager();
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Trip> criteriaQuery = criteriaBuilder.createQuery(Trip.class);
-        */
         EntityManager em = PersistenceManager.getEntityManager();
-        //List<Trip> trips = em.createQuery("SELECT movie from Movie movie where movie.language = ?1").setParameter(1, "English").getResultList();
         List<Trip> trips = em.createQuery("SELECT b FROM Trip b ",Trip.class).getResultList();
-        //List<Trip> trips = entityManager.createQuery(criteriaQuery).getResultList();
-
-        for (Trip trip : trips) {
-            System.out.println(trip);
-        }
-
         return Response.ok(gson.toJson(trips)).build();
 
     }
-/*
+
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTrip(@PathParam("id") int id) {
-        return Response.ok(new Trip(1, "mario")).build();
-
+        EntityManager em = PersistenceManager.getEntityManager();
+        List<Trip> trip = em.createQuery("SELECT b FROM Trip b WHERE b.id=1 ",Trip.class).getResultList();
+        return Response.ok(trip).build();
     }
-
+/*
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
