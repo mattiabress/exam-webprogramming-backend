@@ -4,9 +4,11 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
     http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
 >
-    <persistence-unit name="jpa-example">
-        <!--persistence-unit name="jpa-tutorial"-->
-<!--        <class>it.units.studenti.mattiabressan.examwebprogramming.rest.model.Trip</class>-->
+    <persistence-unit name="jpatutorial">
+<!--        <provider>org.hibernate.ejb.HibernatePersistence</provider>-->
+
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>it.units.studenti.mattiabressan.examwebprogramming.rest.model.Trip</class>
 
         <!--
         <jar-file>hibernate-and-jpa-entities.jar</jar-file>
@@ -17,11 +19,11 @@
             <!--property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/-->
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/webprogrammin"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
             <property name="javax.persistence.jdbc.user" value="root"/>
             <property name="javax.persistence.jdbc.password" value="root"/>
-            <property name="hibernate.show_sql" value = "true" />
-            <property name="hibernate.format_sql" value = "true" />
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
 
             <!-- <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/> -->
             <!--

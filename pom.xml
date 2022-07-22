@@ -118,6 +118,7 @@
             <artifactId>hibernate-core</artifactId>
             <version>6.1.1.Final</version>
             <type>pom</type>
+            <scope>compile</scope>
         </dependency>
         <!-- Mysql Connector -->
         <dependency>
@@ -125,6 +126,16 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.29</version>
         </dependency>
+
+
+
+        <!-- https://mvnrepository.com/artifact/jakarta.persistence/jakarta.persistence-api -->
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
