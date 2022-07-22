@@ -3,7 +3,6 @@ package it.units.studenti.mattiabressan.examwebprogramming.rest.model;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-
 public class PersistenceManager {
 
     private static EntityManagerFactory factory;
