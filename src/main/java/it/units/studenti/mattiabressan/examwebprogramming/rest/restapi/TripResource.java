@@ -32,10 +32,16 @@ public class TripResource {
         //entityManager.persist(phone);
             */
         Gson gson = new Gson();
+        /*
         EntityManager entityManager = PersistenceManager.getEntityManager();
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Trip> criteriaQuery = criteriaBuilder.createQuery(Trip.class);
-        List<Trip> trips = entityManager.createQuery(criteriaQuery).getResultList();
+        */
+        EntityManager em = PersistenceManager.getEntityManager();
+        //List<Trip> trips = em.createQuery("SELECT movie from Movie movie where movie.language = ?1").setParameter(1, "English").getResultList();
+        List<Trip> trips = em.createQuery("SELECT b FROM Trip b ",Trip.class).getResultList();
+        //List<Trip> trips = entityManager.createQuery(criteriaQuery).getResultList();
+
         for (Trip trip : trips) {
             System.out.println(trip);
         }

@@ -9,7 +9,7 @@ public class PersistenceManager {
 
     public static EntityManager getEntityManager() {
         if (factory == null) {
-            EntityManagerFactory factory =
+            factory =
                     Persistence.createEntityManagerFactory("jpatutorial");
         }
         EntityManager entityManager = factory.createEntityManager();
