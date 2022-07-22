@@ -1,7 +1,9 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.restapi;
 
 
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -41,7 +43,8 @@ public class TripResource {
 
         return Response.ok(gson.toJson(trips)).build();*/
 
-        return Response.ok("gson.toJson(trips)").build();
+        Response fdsdf = Response.ok("dssada").build();
+        return fdsdf;
     }
 /*
     @GET

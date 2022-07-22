@@ -1,4 +1,4 @@
-package it.units;
+package it.units.studenti.mattiabressan.examwebprogramming.rest.restapi;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -11,7 +11,7 @@ public class BookResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getBooks() {
-        Response fdsdf = Response.ok("fdsdf").build();
+        Response fdsdf = Response.ok("dsadsad").build();
         return fdsdf;
 
     }
