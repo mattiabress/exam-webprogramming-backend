@@ -1,4 +1,4 @@
-package it.units.studenti.mattiabressan.examwebprogramming.rest.model;
+package it.units.studenti.mattiabressan.examwebprogramming.rest.database;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
