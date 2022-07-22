@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 @NamedQueries({
         @NamedQuery(name = "Trip.findAll",
                 query = "SELECT b.email,b.firstname,b.lastname FROM Trip b"),
+
+
 })
 public class User {
     @Id
@@ -25,18 +27,15 @@ public class User {
     public User() {
     }
 
-    public User(String email, String firstname, String lastname, String password) {
+    public void setEmail(String email) {
         this.email = email;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.password = password;
     }
 
-    public User(int id, String email, String firstname, String lastname, String password) {
-        this.id = id;
-        this.email = email;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.password = password;
+    public int getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

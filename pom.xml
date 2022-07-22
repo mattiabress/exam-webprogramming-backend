@@ -23,7 +23,6 @@
             <name>JBoss Releases Repository</name>
             <url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
         </repository>
-
     </repositories>
 
     <dependencies>
@@ -136,7 +135,12 @@
             <version>8.0.29</version>
         </dependency>
 
-
+        <!-- https://mvnrepository.com/artifact/log4j/log4j  TODO is an old version with vulnerability FIX IT-->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
 
 <!--        &lt;!&ndash; https://mvnrepository.com/artifact/jakarta.persistence/jakarta.persistence-api &ndash;&gt;-->
 <!--        <dependency>-->
