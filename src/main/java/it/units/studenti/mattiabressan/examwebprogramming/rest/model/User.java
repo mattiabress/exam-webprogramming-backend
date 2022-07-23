@@ -2,6 +2,9 @@ package it.units.studenti.mattiabressan.examwebprogramming.rest.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "user")
 @NamedQueries({
@@ -27,8 +30,8 @@ public class User {
     @Column(name = "token")
     private String token;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<Trip> trips = new ArrayList<Trip>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Trip> trips = new ArrayList<Trip>();
 
     public String getRole() {
         return role;

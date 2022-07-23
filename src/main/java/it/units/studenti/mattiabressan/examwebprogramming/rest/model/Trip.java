@@ -18,24 +18,24 @@ public class Trip {
     @Column(name = "id")
     @GeneratedValue(generator = "increment")
     private int id;
-    @Column(name = "trip_date")
-    private Date tripDate;
+//    @Column(name = "trip_date")
+//    private Date tripDate;
     @Column(name = "name")
     private String name;
     @Column(name = "vehicle")
     private String vehicle;
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-//    public User getUser() {
-//        return user;
-//    }
+    public User getUser() {
+        return user;
+    }
 
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
 
 //    @Type(type = "json")

@@ -11,6 +11,7 @@ import jakarta.persistence.EntityManager;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 import java.util.Optional;
 
 @Path("/trips")
@@ -21,7 +22,8 @@ public class TripResource {
         Gson gson = new Gson();
         EntityManager em = PersistenceManager.getEntityManager();
         TripDAO tripDAO = new TripDAO(em);
-        return Response.ok(gson.toJson(tripDAO.findAll())).build();
+        List<Trip> trips =tripDAO.findAll();
+        return Response.ok(gson.toJson(trips)).build();
     }
     @GET
     @Path("/{id}")
