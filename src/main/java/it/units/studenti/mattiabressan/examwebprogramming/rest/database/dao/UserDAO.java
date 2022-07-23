@@ -1,6 +1,7 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao;
 
 import it.units.studenti.mattiabressan.examwebprogramming.rest.model.User;
+//import it.units.studenti.mattiabressan.examwebprogramming.rest.model.UserSecurity;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
@@ -47,4 +48,10 @@ public class UserDAO {
         }
         return Optional.empty();
     }
+
+//    public UserSecurity getUserAuthentication(int id){
+//        Optional<User> user=findById(id);
+//        UserSecurity userSecurity=new UserSecurity(); //TODO sistemare
+//        return userSecurity;
+//    }
 }

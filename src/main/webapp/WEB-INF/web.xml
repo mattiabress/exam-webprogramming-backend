@@ -4,6 +4,9 @@
 
 <web-app>
     <display-name>Archetype Created Web Application</display-name>
+<!--    <listener>-->
+<!--        <listener-class>it.units.studenti.mattiabressan.examwebprogramming.rest.filter.PersistenceListener</listener-class>-->
+<!--    </listener>-->
     <servlet>
         <servlet-name>Jersey REST Service</servlet-name>
         <servlet-class>
