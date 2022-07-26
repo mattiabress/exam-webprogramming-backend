@@ -30,8 +30,8 @@ public class User {
     @Column(name = "token")
     private String token;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Trip> trips = new ArrayList<Trip>();
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    private List<Trip> trips = new ArrayList<Trip>();
 
     public String getRole() {
         return role;

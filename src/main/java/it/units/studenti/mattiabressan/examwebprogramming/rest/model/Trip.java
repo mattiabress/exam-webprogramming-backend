@@ -24,18 +24,19 @@ public class Trip {
     private String name;
     @Column(name = "vehicle")
     private String vehicle;
+    @Column(name = "user_id")
+    private int user;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 
 
 //    @Type(type = "json")

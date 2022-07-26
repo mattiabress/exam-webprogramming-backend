@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
 
-@Path("/trips")
+@Path("/trip")
 public class TripResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
