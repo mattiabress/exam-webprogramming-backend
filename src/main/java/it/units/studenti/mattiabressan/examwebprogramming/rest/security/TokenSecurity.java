@@ -1,5 +1,4 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.security;
-
 import org.jose4j.jwk.RsaJsonWebKey;
 import org.jose4j.jwk.RsaJwkGenerator;
 import org.jose4j.jws.AlgorithmIdentifiers;

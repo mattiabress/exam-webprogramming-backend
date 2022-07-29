@@ -1,6 +1,7 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.model;
 
-public class UserSecurity extends User{
+public class UserSecurity extends User {
+
     private String password = null;
     private String token = null;
     private String role = null;
@@ -50,7 +51,8 @@ public class UserSecurity extends User{
     }
 
     @Override
-    public String toString() { // TODO edit this part because is not a good idea show the password also it is the hash
+    public String toString() {
         return "UserSecurity [id="+ this.getId() + ", email=" + this.getEmail() + ", role=" + role + ", password=" + password + ", token=" + token + "]";
     }
+
 }

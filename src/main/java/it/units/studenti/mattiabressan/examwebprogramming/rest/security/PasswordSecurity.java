@@ -1,5 +1,4 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.security;
-
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
