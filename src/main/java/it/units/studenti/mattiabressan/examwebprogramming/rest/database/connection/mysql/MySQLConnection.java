@@ -8,7 +8,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.*;
 
-
 public class MySQLConnection implements it.units.studenti.mattiabressan.examwebprogramming.rest.database.connection.Connection {
 
     final static Logger logger = Logger.getLogger(MySQLConnection.class);
@@ -25,6 +24,7 @@ public class MySQLConnection implements it.units.studenti.mattiabressan.examwebp
 
         connection = null;
         try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
             String path = null;
             if (DbConfig.getDbPath() != null) {
                 path = DbConfig.getDbPath();

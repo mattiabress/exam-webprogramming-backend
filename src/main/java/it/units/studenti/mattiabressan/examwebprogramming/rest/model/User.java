@@ -10,19 +10,23 @@ public class User implements JsonSerializable {
     private String firstname = null;
     private String lastname = null;
 
+    private String username=null;
+
     public User() {}
 
-    public User( String email, String firstname, String lastname ) {
+    public User( String email, String firstname, String lastname, String username ) {
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.username=username;
     }
 
-    public User( String id, String email, String firstname, String lastname ) {
+    public User( String id, String email, String firstname, String lastname ,String username) {
         this.id = id;
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.username=username;
     }
 
     public String getId() {
@@ -71,4 +75,7 @@ public class User implements JsonSerializable {
         return jsonObject;
     }
 
+    public String getUsername() {
+        return username;
+    }
 }

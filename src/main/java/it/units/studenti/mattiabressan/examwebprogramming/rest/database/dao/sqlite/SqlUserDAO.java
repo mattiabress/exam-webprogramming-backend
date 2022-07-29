@@ -42,13 +42,14 @@ public class SqlUserDAO implements UserDAO {
             catch( UserNotFoundException e) {}
 
             stmt = connection.prepareStatement( "INSERT INTO USER(" +
-                    "email,firstname,lastname,password,role) VALUES" +
-                    "(?,?,?,?,?)" );
+                    "email,`USERNAME`, firstname,lastname,password,role) VALUES" +
+                    "(?,?,?,?,?.?)" );
             stmt.setString( 1, user.getEmail() );
-            stmt.setString( 2, user.getFirstname() );
-            stmt.setString( 3, user.getLastname() );
-            stmt.setString( 4, user.getPassword() );
-            stmt.setString( 5, user.getRole() );
+            stmt.setString( 2, user.getUsername() );
+            stmt.setString( 3, user.getFirstname() );
+            stmt.setString( 4, user.getLastname() );
+            stmt.setString( 5, user.getPassword() );
+            stmt.setString( 6, user.getRole() );
             stmt.executeUpdate();
 
         } catch ( SQLException e ) {
