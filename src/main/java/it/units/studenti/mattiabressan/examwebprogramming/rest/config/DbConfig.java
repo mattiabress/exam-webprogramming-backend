@@ -64,6 +64,8 @@ public class DbConfig {
         }
         else if( dataBaseType.equalsIgnoreCase( DataBaseType.SQLITE.toString() ) ) {
             return DataBaseType.SQLITE;
+        }else if( dataBaseType.equalsIgnoreCase( DataBaseType.MYSQL.toString() ) ) {
+            return DataBaseType.MYSQL;
         }
         else {
             throw new  IllegalArgumentException("Not a valid supported dataBase: " + dataBaseType );

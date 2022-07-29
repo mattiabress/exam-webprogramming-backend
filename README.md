@@ -33,4 +33,5 @@
 * https://stackoverflow.com/questions/16838047/injecting-entitymanager-with-a-producer-in-tomcat
 * https://stackoverflow.com/questions/158336/is-there-a-way-to-run-a-method-class-only-on-tomcat-wildfly-glassfish-startup
 * https://github.com/auth0/java-jwt
+* https://www.baeldung.com/java-connect-mysql
 

@@ -2,7 +2,8 @@ package it.units.studenti.mattiabressan.examwebprogramming.rest.database.def;
 
 public enum DataBaseType {
     ORIENTDB("ORIENTDB"),
-    SQLITE("SQLITE");
+    SQLITE("SQLITE"),
+    MYSQL("MYSQL");
 
     private final String val;
 

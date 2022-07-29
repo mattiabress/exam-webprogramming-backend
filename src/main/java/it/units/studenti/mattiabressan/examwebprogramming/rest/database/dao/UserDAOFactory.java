@@ -4,6 +4,7 @@ import it.units.studenti.mattiabressan.examwebprogramming.rest.config.DbConfig;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.database.connection.Connection;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.database.connection.ConnectionFactory;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.gremlin.GremlinUserDAO;
+import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.mysql.MySQLUserDAO;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.sqlite.SqlUserDAO;
 
 
@@ -19,6 +20,8 @@ public class UserDAOFactory {
                 return new GremlinUserDAO( connection );
             case SQLITE:
                 return new SqlUserDAO( connection );
+            case MYSQL:
+                return new MySQLUserDAO( connection );
             default:
                 // should not happen: we test for correct input in DbConfig.java
                 return null;
