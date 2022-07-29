@@ -3,8 +3,8 @@
 
 <Configuration>
     <dbType>MYSQL</dbType>
-    <dbName>webprogrammig</dbName>
-    <dbPath>jdbc:mysql://localhost:3306/webprogrammig</dbPath>
+    <dbName>webprogramming</dbName>
+    <dbPath>jdbc:mysql://localhost:3306/webprogramming</dbPath>
     <dbHost>localhost</dbHost>
     <dbPort>3306</dbPort>
     <dbUser>root</dbUser>
