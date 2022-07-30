@@ -78,12 +78,12 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
                 return;
             }
 
-            String id = null;
+            Integer id = null;
             String jwt = authProperty.get(0);
 
             // try to decode the jwt - deny access if no valid token provided
             try {
-                id = TokenSecurity.validateJwtToken(jwt);
+                id = Integer.parseInt(TokenSecurity.validateJwtToken(jwt));
             } catch (InvalidJwtException e) {
                 logger.warn("Invalid token provided!");
                 requestContext.abortWith(
@@ -134,7 +134,7 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 
             // set header param email for user identification in rest service - do not decode jwt twice in rest services
             List<String> idList = new ArrayList<String>();
-            idList.add(id);
+            idList.add(String.valueOf(id));
             headers.put(HEADER_PROPERTY_ID, idList);
         }
     }

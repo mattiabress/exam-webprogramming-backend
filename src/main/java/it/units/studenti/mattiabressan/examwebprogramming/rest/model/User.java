@@ -5,12 +5,13 @@ import org.codehaus.jettison.json.JSONObject;
 public class User implements JsonSerializable {
 
     // global unique identifier
-    private String id = null;
+    private Integer id = null;
+    private String username=null;
     private String email = null;
     private String firstname = null;
     private String lastname = null;
 
-    private String username=null;
+
 
     public User() {}
 
@@ -21,7 +22,7 @@ public class User implements JsonSerializable {
         this.username=username;
     }
 
-    public User( String id, String email, String firstname, String lastname ,String username) {
+    public User( Integer id, String email, String firstname, String lastname ,String username) {
         this.id = id;
         this.email = email;
         this.firstname = firstname;
@@ -29,11 +30,11 @@ public class User implements JsonSerializable {
         this.username=username;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -77,5 +78,9 @@ public class User implements JsonSerializable {
 
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

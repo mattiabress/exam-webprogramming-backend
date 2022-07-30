@@ -2,8 +2,8 @@ package it.units.studenti.mattiabressan.examwebprogramming.rest.database.connect
 
 import it.units.studenti.mattiabressan.examwebprogramming.rest.config.DbConfig;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.database.connection.mysql.MySQLConnection;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.database.connection.orientdb.OrientDbConnection;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.database.connection.sqlite.SQLiteConnection;
+//import it.units.studenti.mattiabressan.examwebprogramming.rest.database.connection.orientdb.OrientDbConnection;
+//import it.units.studenti.mattiabressan.examwebprogramming.rest.database.connection.sqlite.SQLiteConnection;
 
 
 public class ConnectionFactory {
@@ -13,11 +13,11 @@ public class ConnectionFactory {
     public static Connection getConnection() {
         if( connection != null ) return connection;
 
-        switch( DbConfig.getDbType() ) {
+        switch( DbConfig.getDbType() ) {/*
             case ORIENTDB:
                 connection = new OrientDbConnection();
             case SQLITE:
-                connection = new SQLiteConnection();
+                connection = new SQLiteConnection();*/
             case MYSQL:
                 connection = new MySQLConnection();
             default:

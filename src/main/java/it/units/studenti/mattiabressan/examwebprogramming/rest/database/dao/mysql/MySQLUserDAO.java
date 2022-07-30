@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.log4j.Logger;
 
@@ -16,13 +17,39 @@ import it.units.studenti.mattiabressan.examwebprogramming.rest.model.User;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.model.UserSecurity;
 
 public class MySQLUserDAO implements UserDAO {
-    final static Logger logger = Logger.getLogger(MySQLUserDAO.class);
+
+    public final static Logger logger = Logger.getLogger(MySQLUserDAO.class);
 
     private Connection connection = null;
+
+
 
     public MySQLUserDAO(it.units.studenti.mattiabressan.examwebprogramming.rest.database.connection.Connection connection) {
         this.connection = (Connection) connection.get();
     }
+
+    @Override
+    public List<User> findAll() {
+        return null;
+    }
+
+    @Override
+    public Optional<User> findById(Integer id) throws UserNotFoundException {
+        return Optional.empty();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public boolean createUser(UserSecurity user) throws UserExistingException {
@@ -68,10 +95,10 @@ public class MySQLUserDAO implements UserDAO {
     }
 
     @Override
-    public String getUserIdByEmail(String email) throws UserNotFoundException {
+    public int getUserIdByEmail(String email) throws UserNotFoundException {
         logger.debug("getUserIdByEmail: " + email);
 
-        String id = null;
+        int id = 0;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
@@ -81,7 +108,7 @@ public class MySQLUserDAO implements UserDAO {
             rs = stmt.executeQuery();
 
             if (rs.next()) {
-                id = String.valueOf(rs.getInt("id"));
+                id = rs.getInt("id");
             } else {
                 throw new UserNotFoundException(email);
             }
@@ -101,7 +128,12 @@ public class MySQLUserDAO implements UserDAO {
     }
 
     @Override
-    public User getUser(String id) throws UserNotFoundException {
+    public User getUserByUsername(String username) throws UserNotFoundException {
+        return null;
+    }
+
+    @Override
+    public User getUser(int id) throws UserNotFoundException {
         logger.debug("getUser: " + id);
 
         PreparedStatement stmt = null;
@@ -110,7 +142,7 @@ public class MySQLUserDAO implements UserDAO {
 
         try {
             stmt = connection.prepareStatement("SELECT id, firstname, lastname, email FROM USER WHERE id=?;");
-            stmt.setString(1, id);
+            stmt.setInt(1, id);
             rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -171,6 +203,11 @@ public class MySQLUserDAO implements UserDAO {
         }
 
         return user;
+    }
+
+    @Override
+    public UserSecurity getUserAuthentication(int id) throws UserNotFoundException {
+        return null;
     }
 
     @Override
@@ -321,6 +358,11 @@ public class MySQLUserDAO implements UserDAO {
         }
 
         return true;
+    }
+
+    @Override
+    public boolean deleteUser(int id) throws UserNotFoundException {
+        return false;
     }
 
     @Override

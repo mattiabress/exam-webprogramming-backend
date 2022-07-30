@@ -59,12 +59,7 @@ public class DbConfig {
     }
 
     private static DataBaseType parseDataBaseType( String dataBaseType ) {
-        if( dataBaseType.equalsIgnoreCase( DataBaseType.ORIENTDB.toString() ) ) {
-            return DataBaseType.ORIENTDB;
-        }
-        else if( dataBaseType.equalsIgnoreCase( DataBaseType.SQLITE.toString() ) ) {
-            return DataBaseType.SQLITE;
-        }else if( dataBaseType.equalsIgnoreCase( DataBaseType.MYSQL.toString() ) ) {
+        if( dataBaseType.equalsIgnoreCase( DataBaseType.MYSQL.toString() ) ) {
             return DataBaseType.MYSQL;
         }
         else {
