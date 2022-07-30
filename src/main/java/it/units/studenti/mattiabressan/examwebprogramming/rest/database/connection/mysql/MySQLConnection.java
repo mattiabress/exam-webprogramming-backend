@@ -87,8 +87,8 @@ public class MySQLConnection implements it.units.studenti.mattiabressan.examwebp
                     "`USERNAME` VARCHAR(50) NOT NULL , " +
                     "`FIRSTNAME` VARCHAR(50) NOT NULL , " +
                     "`LASTNAME` VARCHAR(50) NOT NULL , " +
-                    "`PASSWORD` VARCHAR(50) NOT NULL , " +
-                    "`TOKEN` VARCHAR(250)  , " +
+                    "`PASSWORD` VARCHAR(200) NOT NULL , " +
+                    "`TOKEN` VARCHAR(400)  , " +
                     "`ROLE` VARCHAR(50) NOT NULL , PRIMARY KEY (`ID`)) " +
                     "ENGINE = InnoDB;";
             stmt.executeUpdate(sql);
