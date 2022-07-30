@@ -14,6 +14,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.collections.impl.lazy.parallel.set.sorted.SelectSortedSetBatch;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.UserDAO;
@@ -33,21 +34,14 @@ import it.units.studenti.mattiabressan.examwebprogramming.rest.security.TokenSec
 public class UserResource extends ResourceConfig {
 
     @POST
-    @Path("/")
+    @Path("/signup")
     @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createUser( UserSecurity userSecurity ) {
         UserDAO userDao = UserDAOFactory.getUserDAO();
-
         try {
-            try {
-
-                // check if user no registered already
-                userDao.getUserIdByEmail( userSecurity.getEmail() );
-                throw new UserExistingException( userSecurity.getEmail() );
-            }
-            catch( UserNotFoundException e ) {
+            if(userDao.findByUsername(userSecurity.getUsername()).isPresent()){
                 // standard user role
                 userSecurity.setRole("user");
                 // store plain password
@@ -59,6 +53,8 @@ public class UserResource extends ResourceConfig {
                 // authenticate user
                 return authenticate( new Credentials( userSecurity.getEmail(), plainPassword ) );
             }
+            else
+                throw new UserExistingException( userSecurity.getEmail() );
         }
         catch ( UserExistingException e ) {
             return ResponseBuilder.createResponse( Response.Status.CONFLICT, e.getMessage() );
@@ -69,7 +65,7 @@ public class UserResource extends ResourceConfig {
     }
 
     @POST
-    @Path("/authenticate")
+    @Path("/login")
     @PermitAll
     @Produces("application/json")
     @Consumes("application/json")
@@ -77,6 +73,14 @@ public class UserResource extends ResourceConfig {
         UserDAO userDao = UserDAOFactory.getUserDAO();
 
         try {
+
+            if(userDao.findByUsername(credentials.getUsername()).isPresent()){
+                UserSecurity userSecurity = userDao;
+            }
+
+
+
+
             String id = userDao.getUserIdByEmail( credentials.getEmail() );
             UserSecurity userSecurity = userDao.getUserAuthentication( id );
 

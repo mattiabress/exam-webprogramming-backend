@@ -1,22 +1,22 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.model;
 
 public class Credentials {
-    private String email = null;
+    private String username = null;
     private String password = null;
 
     public Credentials() {}
 
-    public Credentials(String email, String password) {
-        this.email = email;
+    public Credentials(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
