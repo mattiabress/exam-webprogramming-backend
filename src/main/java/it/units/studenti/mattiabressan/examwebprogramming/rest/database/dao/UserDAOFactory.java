@@ -15,11 +15,7 @@ public class UserDAOFactory {
         Connection connection = ConnectionFactory.getConnection();
 
         // use driver specified according to database
-        switch( DbConfig.getDbType() ) {/*
-            case ORIENTDB:
-                return new GremlinUserDAO( connection );
-            case SQLITE:
-                return new SqlUserDAO( connection );*/
+        switch( DbConfig.getDbType() ) {
             case MYSQL:
                 return new MySQLUserDAO( connection );
             default:

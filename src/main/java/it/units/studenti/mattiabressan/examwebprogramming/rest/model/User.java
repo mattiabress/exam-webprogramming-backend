@@ -1,4 +1,5 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.model;
+
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -6,28 +7,28 @@ public class User implements JsonSerializable {
 
     // global unique identifier
     private Integer id = null;
-    private String username=null;
+    private String username = null;
     private String email = null;
     private String firstname = null;
     private String lastname = null;
 
 
+    public User() {
+    }
 
-    public User() {}
-
-    public User( String email, String firstname, String lastname, String username ) {
+    public User(String email, String firstname, String lastname, String username) {
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.username=username;
+        this.username = username;
     }
 
-    public User( Integer id, String email, String firstname, String lastname ,String username) {
+    public User(Integer id, String email, String firstname, String lastname, String username) {
         this.id = id;
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.username=username;
+        this.username = username;
     }
 
     public Integer getId() {
@@ -70,9 +71,9 @@ public class User implements JsonSerializable {
     @Override
     public JSONObject toJson() throws JSONException {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put( "email", this.email );
-        jsonObject.put( "firstname", this.firstname );
-        jsonObject.put( "lastname", this.lastname );
+        jsonObject.put("email", this.email);
+        jsonObject.put("firstname", this.firstname);
+        jsonObject.put("lastname", this.lastname);
         return jsonObject;
     }
 

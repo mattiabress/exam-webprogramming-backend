@@ -22,7 +22,10 @@ public class MySQLUserDAO implements UserDAO {
 
     private Connection connection = null;
 
-
+    //query
+    private static final String INSERT_USER="INSERT INTO USER(email,username,firstname,lastname,password,role) VALUES (?,?,?,?,?,?)";
+    private static final String SELECT_ALL_USER="SELECT id, firstname, lastname, email FROM USER;";
+    private static final String SELECT_USER_BY_ID="SELECT id, firstname, lastname, email FROM USER WHERE id=?;";
 
     public MySQLUserDAO(it.units.studenti.mattiabressan.examwebprogramming.rest.database.connection.Connection connection) {
         this.connection = (Connection) connection.get();
@@ -30,35 +33,78 @@ public class MySQLUserDAO implements UserDAO {
 
     @Override
     public List<User> findAll() {
-        return null;
+        logger.debug("getAllUsers");
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<User> users = new ArrayList<User>();
+        try {
+            stmt = connection.prepareStatement(SELECT_ALL_USER);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                Integer userId = rs.getInt("id");
+                String email = rs.getString("email");
+                String firstname = rs.getString("firstname");
+                String lastname = rs.getString("lastname");
+                String username = rs.getString("username");
+                users.add(new User(userId, email, firstname, lastname,username));
+            }
+        } catch (SQLException e) {
+            logger.debug(e.getClass().getName() + ": " + e.getMessage());
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+            } catch (SQLException e) {
+                logger.warn(e.getMessage());
+            }
+        }
+        return users;
     }
 
     @Override
-    public Optional<User> findById(Integer id) throws UserNotFoundException {
-        return Optional.empty();
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @Override
-    public boolean createUser(UserSecurity user) throws UserExistingException {
-        logger.debug("createUser: " + user.getEmail());
+    public Optional<User> findById(Integer id){
+        logger.debug("getUser: " + id);
 
         PreparedStatement stmt = null;
+        ResultSet rs = null;
+        User user = null;
 
         try {
+            stmt = connection.prepareStatement(SELECT_USER_BY_ID);
+            stmt.setInt(1, id);
+            rs = stmt.executeQuery();
 
+            if (rs.next()) {
+                Integer userId = rs.getInt("id");
+                String email = rs.getString("email");
+                String firstname = rs.getString("firstname");
+                String lastname = rs.getString("lastname");
+                String username = rs.getString("username");
+                user = new User(userId, email, firstname, lastname,username);
+            } else {
+                return Optional.empty();
+            }
+
+        } catch (SQLException e) {
+            logger.debug(e.getClass().getName() + ": " + e.getMessage());
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+            } catch (SQLException e) {
+                logger.warn(e.getMessage());
+            }
+        }
+        return Optional.of(user);
+    }
+
+
+
+    @Override
+    public Optional<User> createUser(UserSecurity user) throws UserExistingException {
+        logger.debug("createUser: " + user.getEmail());
+        PreparedStatement stmt = null;
+        try {
             // check if user already registered
             try {
                 if (getUserIdByEmail(user.getEmail()) != null) {
@@ -69,9 +115,7 @@ public class MySQLUserDAO implements UserDAO {
             catch (UserNotFoundException e) {
             }
 
-            stmt = connection.prepareStatement("INSERT INTO USER(" +
-                    "email,username,firstname,lastname,password,role) VALUES" +
-                    "(?,?,?,?,?,?)");
+            stmt = connection.prepareStatement(INSERT_USER);
             stmt.setString(1, user.getEmail());
             stmt.setString(2, user.getUsername());
             stmt.setString(3, user.getFirstname());
@@ -132,86 +176,10 @@ public class MySQLUserDAO implements UserDAO {
         return null;
     }
 
-    @Override
-    public User getUser(int id) throws UserNotFoundException {
-        logger.debug("getUser: " + id);
 
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        User user = null;
-
-        try {
-            stmt = connection.prepareStatement("SELECT id, firstname, lastname, email FROM USER WHERE id=?;");
-            stmt.setInt(1, id);
-            rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                String userId = String.valueOf(rs.getInt("id"));
-                String email = rs.getString("email");
-                String firstname = rs.getString("firstname");
-                String lastname = rs.getString("lastname");
-
-                user = new User(userId, email, firstname, lastname);
-            } else {
-                throw new UserNotFoundException(id);
-            }
-
-        } catch (SQLException e) {
-            logger.debug(e.getClass().getName() + ": " + e.getMessage());
-        } finally {
-            try {
-                rs.close();
-                stmt.close();
-            } catch (SQLException e) {
-                logger.warn(e.getMessage());
-            }
-        }
-
-        return user;
-    }
 
     @Override
-    public List<User> getAllUsers() {
-        logger.debug("getAllUsers");
-
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List<User> user = new ArrayList<User>();
-
-        try {
-            stmt = connection.prepareStatement("SELECT id, firstname, lastname, email FROM USER;");
-            rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                String userId = String.valueOf(rs.getInt("id"));
-                String email = rs.getString("email");
-                String firstname = rs.getString("firstname");
-                String lastname = rs.getString("lastname");
-
-                user.add(new User(userId, email, firstname, lastname));
-            }
-
-        } catch (SQLException e) {
-            logger.debug(e.getClass().getName() + ": " + e.getMessage());
-        } finally {
-            try {
-                rs.close();
-                stmt.close();
-            } catch (SQLException e) {
-                logger.warn(e.getMessage());
-            }
-        }
-
-        return user;
-    }
-
-    @Override
-    public UserSecurity getUserAuthentication(int id) throws UserNotFoundException {
-        return null;
-    }
-
-    @Override
-    public UserSecurity getUserAuthentication(String id) throws UserNotFoundException {
+    public UserSecurity getUserAuthentication(Integer id) throws UserNotFoundException {
         logger.debug("getUserAuthentication: " + id);
 
         PreparedStatement stmt = null;

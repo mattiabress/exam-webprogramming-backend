@@ -10,30 +10,21 @@ import it.units.studenti.mattiabressan.examwebprogramming.rest.model.UserSecurit
 
 
 public interface UserDAO {
-
-
     public List<User> findAll() ;
+    public Optional<User> findById(Integer id);
+    public Optional<User> findByEmail(String email);
+    public Optional<User> findByUsername(String username);
+    public Optional<User> createUser( UserSecurity user );
+    public Optional<UserSecurity> getUserAuthentication( Integer id );
+    public Optional<UserSecurity> setUserAuthentication( UserSecurity user );
+    public Optional<User> updateUser( User user ) ;
+    public boolean deleteUser( Integer id ) ;
 
-    public Optional<User> findById(Integer id) throws UserNotFoundException;
 
 
+    //public boolean createUser( UserSecurity user ) throws UserExistingException;
+    //public int getUserIdByEmail( String email ) throws UserNotFoundException;
+    //public User getUserByUsername(String username )  throws UserNotFoundException;
+    //public User getUser( int id ) throws UserNotFoundException;
 
-
-
-
-
-
-    public boolean createUser( UserSecurity user ) throws UserExistingException;
-
-    public int getUserIdByEmail( String email ) throws UserNotFoundException;
-    public User getUserByUsername(String username )  throws UserNotFoundException;
-    public User getUser( int id ) throws UserNotFoundException;
-
-    public List<User> getAllUsers();
-
-    public UserSecurity getUserAuthentication( int id ) throws UserNotFoundException;
-    public boolean setUserAuthentication( UserSecurity user ) throws UserNotFoundException;
-
-    public boolean updateUser( User user ) throws UserNotFoundException;
-    public boolean deleteUser( int id ) throws UserNotFoundException;
 }
