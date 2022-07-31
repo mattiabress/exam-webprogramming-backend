@@ -9,7 +9,7 @@
 
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>it.units.studenti.mattiabressan.examwebprogramming.rest.model.Trip</class>
-
+        <class>it.units.studenti.mattiabressan.examwebprogramming.rest.model.User</class>
         <!--
         <jar-file>hibernate-and-jpa-entities.jar</jar-file>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
