@@ -1,9 +1,5 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.restapi;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.PermitAll;
@@ -73,16 +69,13 @@ public class UserResource extends ResourceConfig {
         UserDAO userDao = UserDAOFactory.getUserDAO();
 
         try {
-
-            if(userDao.findByUsername(credentials.getUsername()).isPresent()){
-                UserSecurity userSecurity = userDao;
+            Optional<User> optionalUser=userDao.findByUsername(credentials.getUsername());
+            if(optionalUser.isEmpty()){
+                return ResponseBuilder.createResponse( Response.Status.UNAUTHORIZED );
             }
 
-
-
-
-            User user = userDao.findByUsername( credentials.getUsername() ).get();
-            UserSecurity userSecurity = userDao.getUserAuthentication( id );
+            User user = optionalUser.get();
+            UserSecurity userSecurity = userDao.getUserAuthentication( user.getId() ).get();
 
             if( PasswordSecurity.validatePassword( credentials.getPassword(), userSecurity.getPassword() ) == false ) {
                 return ResponseBuilder.createResponse( Response.Status.UNAUTHORIZED );
@@ -110,7 +103,7 @@ public class UserResource extends ResourceConfig {
         }
 
     }
-/*
+    /*
     @GET
     @Path("/")
     //@RolesAllowed({"admin","user"})
@@ -134,7 +127,8 @@ public class UserResource extends ResourceConfig {
         catch ( Exception e ) {
             return ResponseBuilder.createResponse( Response.Status.UNAUTHORIZED );
         }
-    }*/
+    }
+    */
 
     @GET
     @Path("/getAll")
