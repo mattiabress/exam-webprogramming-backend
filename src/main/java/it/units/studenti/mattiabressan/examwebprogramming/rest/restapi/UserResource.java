@@ -81,7 +81,7 @@ public class UserResource extends ResourceConfig {
 
 
 
-            String id = userDao.getUserIdByEmail( credentials.getEmail() );
+            User user = userDao.findByUsername( credentials.getUsername() ).get();
             UserSecurity userSecurity = userDao.getUserAuthentication( id );
 
             if( PasswordSecurity.validatePassword( credentials.getPassword(), userSecurity.getPassword() ) == false ) {
@@ -110,10 +110,11 @@ public class UserResource extends ResourceConfig {
         }
 
     }
-
+/*
     @GET
     @Path("/")
-    @RolesAllowed({"admin","user"})
+    //@RolesAllowed({"admin","user"})
+    @PermitAll //TODO sistemare
     @Produces("application/json")
     public Response get( @Context HttpHeaders headers ) {
         UserDAO userDao = UserDAOFactory.getUserDAO();
@@ -133,7 +134,7 @@ public class UserResource extends ResourceConfig {
         catch ( Exception e ) {
             return ResponseBuilder.createResponse( Response.Status.UNAUTHORIZED );
         }
-    }
+    }*/
 
     @GET
     @Path("/getAll")
@@ -144,7 +145,7 @@ public class UserResource extends ResourceConfig {
 
         try {
             List<JsonSerializable> usersJson = new ArrayList<JsonSerializable>();
-            usersJson.addAll( (Collection<? extends JsonSerializable>) userDao.getAllUsers() );
+            usersJson.addAll( (Collection<? extends JsonSerializable>) userDao.findAll() );
 
             // Return the users on the response
             return ResponseBuilder.createResponse( Response.Status.OK, usersJson );
@@ -157,7 +158,7 @@ public class UserResource extends ResourceConfig {
         }
 
     }
-
+/*
     @PUT
     @Path("/update")
     @RolesAllowed({"admin","user"}) // only an admin user should be allowed to request all users
@@ -206,7 +207,7 @@ public class UserResource extends ResourceConfig {
         }
 
     }
-
+*/
     private String getId( HttpHeaders headers) {
         // get the email we set in AuthenticationFilter
         List<String> id = headers.getRequestHeader( AuthenticationFilter.HEADER_PROPERTY_ID );

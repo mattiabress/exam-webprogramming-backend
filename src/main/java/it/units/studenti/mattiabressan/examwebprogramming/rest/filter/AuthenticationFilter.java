@@ -1,11 +1,7 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.filter;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.Priority;
 import javax.annotation.security.DenyAll;
@@ -94,10 +90,10 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 
             // check if token matches an user token (set in user/authenticate)
             UserDAO userDao = UserDAOFactory.getUserDAO();
-            User user = null;
-            try {
-                user = userDao.getUser(id);
-            } catch (UserNotFoundException e) {
+
+
+            Optional<User> optionalUser=userDao.findById(id);
+            if(optionalUser.isEmpty()){
                 logger.warn("Token missmatch!");
                 requestContext.abortWith(
                         ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, ACCESS_DENIED)
@@ -105,8 +101,9 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
                 return;
             }
 
-            UserSecurity userSecurity = userDao.getUserAuthentication(user.getId());
+            User user = optionalUser.get();
 
+            UserSecurity userSecurity = userDao.getUserAuthentication(user.getId()).get();
             // token does not match with token stored in database - enforce re authentication
             if (!userSecurity.getToken().equals(jwt)) {
                 logger.warn("Token expired!");
