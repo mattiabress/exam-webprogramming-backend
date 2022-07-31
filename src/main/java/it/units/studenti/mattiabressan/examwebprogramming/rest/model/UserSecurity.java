@@ -25,6 +25,13 @@ public class UserSecurity extends User {
         this.token = token;
         this.role = role;
     }
+    public UserSecurity( String email, String password, String token, String role,String username ) {
+        this.setEmail( email );
+        this.setUsername( username );
+        this.password = password;
+        this.token = token;
+        this.role = role;
+    }
 
     public String getPassword() {
         return password;

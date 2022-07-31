@@ -12,7 +12,6 @@ public class User implements JsonSerializable {
     private String firstname = null;
     private String lastname = null;
 
-
     public User() {
     }
 
