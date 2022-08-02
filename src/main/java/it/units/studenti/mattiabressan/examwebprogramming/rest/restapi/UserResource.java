@@ -127,7 +127,6 @@ public class UserResource extends ResourceConfig {
                 throw new NotAuthorizedException("Unauthorized!");
             }
 
-
             if (!userDao.deleteUser(id))
                 throw new UserNotFoundException(id);
 

@@ -1,30 +1,44 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.model;
 
-import org.codehaus.jettison.json.JSONObject;
+import java.sql.Date;
 
 public class Trip {
     private Integer id;
     private String name;
+    private Date tripDate;
     private String vehicle;
-    private String patch; // TODO JSONObject
+    private Object path;
     private String mainStages;
     private User user;
 
-    public Trip(){}
-    public Trip(String name, String vehicle,String patch, String mainStages,User user){
-        this.name=name;
-        this.vehicle=vehicle;
-        this.patch=patch;
-        this.mainStages=mainStages;
-        this.user=user;
+    public Trip() {
     }
-    public Trip(Integer id, String name, String vehicle,String patch, String mainStages,User user){
-        this.id=id;
-        this.name=name;
-        this.vehicle=vehicle;
-        this.patch=patch;
-        this.mainStages=mainStages;
-        this.user=user;
+
+    public Trip(String name, Date tripDate, String vehicle, String path, String mainStages) {
+        this.name = name;
+        this.tripDate = tripDate;
+        this.vehicle = vehicle;
+        this.path = path;
+        this.mainStages = mainStages;
+    }
+
+    public Trip(String name, Date tripDate, String vehicle, String path, String mainStages, User user) {
+        this.name = name;
+        this.tripDate = tripDate;
+        this.vehicle = vehicle;
+        this.path = path;
+        this.mainStages = mainStages;
+        this.user = user;
+    }
+
+    public Trip(Integer id, String name, Date tripDate, String vehicle, String path, String mainStages, User user) {
+        this.id = id;
+        this.name = name;
+        this.tripDate = tripDate;
+        this.vehicle = vehicle;
+        this.path = path;
+        this.mainStages = mainStages;
+        this.user = user;
     }
 
     public Integer getId() {
@@ -39,8 +53,12 @@ public class Trip {
         return vehicle;
     }
 
-    public String getPatch() {
-        return patch;
+    public Object getPath() {
+        return path;
+    }
+
+    public Date getTripDate() {
+        return tripDate;
     }
 
     public String getMainStages() {
@@ -49,6 +67,14 @@ public class Trip {
 
     public User getUser() {
         return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
 

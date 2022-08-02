@@ -37,7 +37,6 @@ public class User implements JsonSerializable {
     public void setId(Integer id) {
         this.id = id;
     }
-
     public String getEmail() {
         return email;
     }

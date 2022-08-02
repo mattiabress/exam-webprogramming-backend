@@ -10,5 +10,7 @@ public interface TripDAO {
     public List<Trip> findAll();
     public List<Trip> findAllByUserId(Integer userId);
     public Optional<Trip> createTrip(Trip trip);
+    public boolean delete(Trip trip);
+    public Optional<Trip> update(Trip trip);
 
 }
