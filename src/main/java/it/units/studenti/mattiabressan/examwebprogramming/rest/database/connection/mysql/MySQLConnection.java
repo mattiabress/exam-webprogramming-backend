@@ -88,7 +88,7 @@ public class MySQLConnection implements it.units.studenti.mattiabressan.examwebp
                     "`FIRSTNAME` VARCHAR(50) NOT NULL , " +
                     "`LASTNAME` VARCHAR(50) NOT NULL , " +
                     "`PASSWORD` VARCHAR(200) NOT NULL , " +
-                    "`TOKEN` VARCHAR(400)  , " +
+                    "`TOKEN` text  , " +
                     "`ROLE` VARCHAR(50) NOT NULL , PRIMARY KEY (`ID`)) " +
                     "ENGINE = InnoDB;";
             stmt.executeUpdate(sql);
@@ -120,15 +120,15 @@ public class MySQLConnection implements it.units.studenti.mattiabressan.examwebp
 
         try {
             stmt = connection.prepareStatement("INSERT INTO `user` (`ID`, `EMAIL`, `USERNAME`, `FIRSTNAME`, `LASTNAME`, `PASSWORD`,  `ROLE`) " +
-                            "VALUES (NULL, ?,?,?, ?, ?,?, ? )"
+                            "VALUES (NULL, ?,?,?, ?, ?,?)"
                     );
 
-            stmt.setString(1, "root");
+            stmt.setString(1, "root@root");
             stmt.setString(2, "root");
             stmt.setString(3, "root");
-            stmt.setString(4, PasswordSecurity.generateHash("root"));
-            stmt.setString(5, "root");
-            stmt.setString(7, "root");
+            stmt.setString(4, "root");
+            stmt.setString(5, PasswordSecurity.generateHash("root"));
+            stmt.setString(6, "admin");
             stmt.executeUpdate();
         } catch (SQLException e) {
             logger.debug(e.getClass().getName() + ": " + e.getMessage());

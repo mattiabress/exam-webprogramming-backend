@@ -28,7 +28,7 @@ public class MySQLUserDAO implements UserDAO {
     private static final String SELECT_USER_BY_ID="SELECT id, firstname, lastname, email,username FROM USER WHERE id=?;";
     private static final String SELECT_USER_BY_MAIL="SELECT id, firstname, lastname, email,username FROM USER WHERE email=?;";
     private static final String SELECT_USER_BY_USERNAME="SELECT id, firstname, lastname, email,username FROM USER WHERE username=?;";
-    private static final String SELECT_USER_AUTHENTICATION_BY_ID="SELECT id, firstname, lastname, email,username FROM USER WHERE id=?;";
+    private static final String SELECT_USER_AUTHENTICATION_BY_ID="SELECT email, password, token, role,username FROM USER WHERE id=?;";
     private static final String DELETE_USER_BY_ID="DELETE FROM USER WHERE id=?";
 
     public MySQLUserDAO(it.units.studenti.mattiabressan.examwebprogramming.rest.database.connection.Connection connection) {
@@ -77,7 +77,6 @@ public class MySQLUserDAO implements UserDAO {
             stmt = connection.prepareStatement(SELECT_USER_BY_ID);
             stmt.setInt(1, id);
             rs = stmt.executeQuery();
-
             if (rs.next()) {
                 Integer userId = rs.getInt("id");
                 String email = rs.getString("email");
@@ -88,7 +87,6 @@ public class MySQLUserDAO implements UserDAO {
             } else {
                 return Optional.empty();
             }
-
         } catch (SQLException e) {
             logger.debug(e.getClass().getName() + ": " + e.getMessage());
         } finally {
@@ -105,7 +103,6 @@ public class MySQLUserDAO implements UserDAO {
     @Override
     public Optional<User> findByEmail(String email) {
         logger.debug("findByEmail: " + email);
-
         Integer id = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -114,7 +111,6 @@ public class MySQLUserDAO implements UserDAO {
             stmt = connection.prepareStatement(SELECT_USER_BY_MAIL);
             stmt.setString(1, email);
             rs = stmt.executeQuery();
-
             if (rs.next()) {
                 Integer userId = rs.getInt("id");
                 String firstname = rs.getString("firstname");
@@ -183,7 +179,7 @@ public class MySQLUserDAO implements UserDAO {
         PreparedStatement stmt = null;
         try {
             // check if user already registered
-            if (!findByEmail(user.getEmail()).isPresent()) {
+            if (findByEmail(user.getEmail()).isPresent()) {
                 return Optional.empty();
             }
 
@@ -195,7 +191,6 @@ public class MySQLUserDAO implements UserDAO {
             stmt.setString(5, user.getPassword());
             stmt.setString(6, user.getRole());
             stmt.executeUpdate();
-
 
         } catch (SQLException e) {
             logger.debug(e.getClass().getName() + ": " + e.getMessage());

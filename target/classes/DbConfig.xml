@@ -8,7 +8,7 @@
     <dbHost>localhost</dbHost>
     <dbPort>3306</dbPort>
     <dbUser>root</dbUser>
-    <dbPassword>root</dbPassword>
+    <dbPassword></dbPassword> <!-- root-->
     <dbPool>10</dbPool>
 </Configuration>
 

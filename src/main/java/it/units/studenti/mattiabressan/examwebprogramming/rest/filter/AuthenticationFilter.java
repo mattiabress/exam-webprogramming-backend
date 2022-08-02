@@ -40,7 +40,8 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
     private ResourceInfo resourceInfo;
 
     public static final String HEADER_PROPERTY_ID = "id";
-    public static final String AUTHORIZATION_PROPERTY = "x-access-token";
+    public static final String HEADER_PROPERTY_ROLE = "role";
+    public static final String AUTHORIZATION_PROPERTY = "Authorization";
 
     // Do not use static responses, rebuild reponses every time
     private static final String ACCESS_REFRESH = "Token expired. Please authenticate again!";
@@ -65,6 +66,7 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
             final MultivaluedMap<String, String> headers = requestContext.getHeaders();
             final List<String> authProperty = headers.get(AUTHORIZATION_PROPERTY);
 
+
             // block access if no authorization information is provided
             if (authProperty == null || authProperty.isEmpty()) {
                 logger.warn("No token provided!");
@@ -75,7 +77,18 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
             }
 
             Integer id = null;
-            String jwt = authProperty.get(0);
+            String authHeader=authProperty.get(0);
+            String jwt;
+
+            if (authHeader.startsWith("Bearer ")){
+                jwt = authHeader.substring(7, authHeader.length());
+            } else {
+                logger.warn("No bearer provided!");
+                requestContext.abortWith(
+                        ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED, ACCESS_DENIED)
+                );
+                return;
+            }
 
             // try to decode the jwt - deny access if no valid token provided
             try {
@@ -132,7 +145,12 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
             // set header param email for user identification in rest service - do not decode jwt twice in rest services
             List<String> idList = new ArrayList<String>();
             idList.add(String.valueOf(id));
+            List<String> roleList = new ArrayList<String>();
+            roleList.add(userSecurity.getRole());
+
             headers.put(HEADER_PROPERTY_ID, idList);
+            headers.put(HEADER_PROPERTY_ROLE,roleList );
+
         }
     }
 
