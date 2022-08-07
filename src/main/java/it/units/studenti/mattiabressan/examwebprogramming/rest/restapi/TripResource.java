@@ -80,7 +80,13 @@ public class TripResource extends ResourceConfig {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createTrip(@Context HttpHeaders headers, String tripJsonString) { //create new trip
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create(); //TODO sistemare in String
-        Trip trip = gson.fromJson(tripJsonString, Trip.class);
+        Trip trip =null;
+        try{
+             trip = gson.fromJson(tripJsonString, Trip.class);
+        }catch (Exception e){
+            System.out.println(e); //Path LinkedTreeMap
+        }
+        System.out.println(trip.getPath());
         Integer userId = RequestUtility.getIdFromHeaders(headers);
         TripDAO tripDAO = TripDAOFactory.getTripDAO();
         UserDAO userDAO = UserDAOFactory.getUserDAO();
@@ -100,6 +106,7 @@ public class TripResource extends ResourceConfig {
         System.out.println(tripJsonString);
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         Trip trip = gson.fromJson(tripJsonString, Trip.class); //check if is correct
+
         trip.setId(id);
         TripDAO tripDAO=TripDAOFactory.getTripDAO();
         tripDAO.update(trip);
@@ -113,6 +120,8 @@ public class TripResource extends ResourceConfig {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteTrip(@Context HttpHeaders headers,@PathParam("id") int id) { //create new trip
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        //Gson gson = new GsonBuilder().registerTypeAdapterFactory()
+
         Integer userId = RequestUtility.getIdFromHeaders(headers);
         String role = RequestUtility.getRoleFromHeaders(headers);
         TripDAO tripDAO=TripDAOFactory.getTripDAO();

@@ -34,4 +34,6 @@
 * https://stackoverflow.com/questions/158336/is-there-a-way-to-run-a-method-class-only-on-tomcat-wildfly-glassfish-startup
 * https://github.com/auth0/java-jwt
 * https://www.baeldung.com/java-connect-mysql
+* https://mkyong.com/java/how-to-parse-json-with-gson/
+* 
 

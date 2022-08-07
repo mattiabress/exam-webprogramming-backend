@@ -1,5 +1,7 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.mysql;
 
+import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.TripDAO;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.UserDAO;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.UserDAOFactory;
@@ -7,12 +9,8 @@ import it.units.studenti.mattiabressan.examwebprogramming.rest.model.Trip;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.model.User;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
-import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,11 +19,11 @@ public class MySQLTripDAO implements TripDAO {
     private Connection connection = null;
 
 
-    private static final String INSERT_TRIP = "INSERT INTO `trip` (`NAME`,`TRIP_DATE`, `VEHICLE`, `PATH`, `MAIN_STAGES`, `ID_USER`) VALUES (?,?,?,?,?,?)";
-    private static final String SELECT_ALL_TRIP = "SELECT `ID`,`NAME`,`TRIP_DATE`,`VEHICLE`,`PATH`,`MAIN_STAGES`,`ID_USER` FROM `trip`";
-    private static final String SELECT_ALL_TRIP_BY_USERID = "SELECT `ID`,`NAME`,`TRIP_DATE`,`VEHICLE`,`PATH`,`MAIN_STAGES`,`ID_USER` FROM `trip`";
-    private static final String SELECT_TRIP_BY_ID = "SELECT `ID`,`NAME`,`TRIP_DATE`,`VEHICLE`,`PATH`,`MAIN_STAGES`,`ID_USER` FROM `trip` WHERE `ID`=?";
-    private static final String CREATE_TRIP_TABLE = "CREATE TABLE `webprogramming`.`trip` ( `ID` INT NOT NULL AUTO_INCREMENT , `NAME` VARCHAR(30) NOT NULL , `TRIP_DATE` DATE NOT NULL , `VEHICLE` VARCHAR(25) NOT NULL , `PATH` JSON NOT NULL , `MAIN_STAGES` JSON NOT NULL , `ID_USER` INT NOT NULL , PRIMARY KEY (`ID`)) ENGINE = InnoDB;";
+    private static final String INSERT_TRIP = "INSERT INTO `trip` (`NAME`,`TRIP_DATE`, `VEHICLE`, `PATH`,  `ID_USER`) VALUES (?,?,?,?,?)";
+    private static final String SELECT_ALL_TRIP = "SELECT `ID`,`NAME`,`TRIP_DATE`,`VEHICLE`,`PATH`,`ID_USER` FROM `trip`";
+    private static final String SELECT_ALL_TRIP_BY_USERID = "SELECT `ID`,`NAME`,`TRIP_DATE`,`VEHICLE`,`PATH`,`ID_USER` FROM `trip`";
+    private static final String SELECT_TRIP_BY_ID = "SELECT `ID`,`NAME`,`TRIP_DATE`,`VEHICLE`,`PATH`,`ID_USER` FROM `trip` WHERE `ID`=?";
+    private static final String CREATE_TRIP_TABLE = "CREATE TABLE `webprogramming`.`trip` ( `ID` INT NOT NULL AUTO_INCREMENT , `NAME` VARCHAR(30) NOT NULL , `TRIP_DATE` DATE NOT NULL , `VEHICLE` VARCHAR(25) NOT NULL , `PATH` JSON NOT NULL ,`ID_USER` INT NOT NULL , PRIMARY KEY (`ID`)) ENGINE = InnoDB;";
     private static final String DELETE_TRIP_BY_ID= "DELETE FROM `trip` WHERE `trip`.`ID` = ?";
 
     public MySQLTripDAO(it.units.studenti.mattiabressan.examwebprogramming.rest.database.connection.Connection connection) {
@@ -45,24 +43,21 @@ public class MySQLTripDAO implements TripDAO {
             stmt.setInt(1, id);
             rs = stmt.executeQuery();
             if (rs.next()) {
+
                 Integer tripId = rs.getInt("ID");
                 String name = rs.getString("NAME");
                 Date tripDate=rs.getDate("TRIP_DATE");
                 String vehicle = rs.getString("VEHICLE");
                 String path = rs.getString("PATH");
-                String mainStages = rs.getString("MAIN_STAGES");
                 Integer userId = rs.getInt("ID_USER");
-
-
-                //java.util.Date tripDate = new java.util.Date(tripDateSQL.getTime());
-                //System.out.println("print date");
-                //System.out.println(tripDateSQL);
-                //System.out.println(tripDate);
 
                 UserDAO userDAO = UserDAOFactory.getUserDAO();
                 Optional<User> optionalUser = userDAO.findById(userId);
                 User user = optionalUser.isPresent() ? optionalUser.get() : null;
-                trip = new Trip(tripId, name,tripDate, vehicle, path, mainStages, user);
+
+                Gson gson = new Gson();
+                LinkedTreeMap pathanalyzed = gson.fromJson(path,LinkedTreeMap.class);
+                trip = new Trip(tripId, name,tripDate, vehicle, pathanalyzed, user);
             } else {
                 return Optional.empty();
             }
@@ -94,13 +89,16 @@ public class MySQLTripDAO implements TripDAO {
                 Date tripDate=rs.getDate("TRIP_DATE");
                 String vehicle = rs.getString("VEHICLE");
                 String path = rs.getString("PATH");
-                String mainStages = rs.getString("MAIN_STAGES");
                 Integer userId = rs.getInt("ID_USER");
                 UserDAO userDAO = UserDAOFactory.getUserDAO();
                 Optional<User> optionalUser = userDAO.findById(userId);
                 User user = optionalUser.isPresent() ? optionalUser.get() : null;
 
-                trips.add(new Trip(tripId, name,tripDate, vehicle, path, mainStages, user));
+
+                Gson gson = new Gson();
+                LinkedTreeMap pathanalyzed = gson.fromJson(path,LinkedTreeMap.class);
+
+                trips.add(new Trip(tripId, name,tripDate, vehicle, pathanalyzed,user));
             }
         } catch (SQLException e) {
             logger.debug(e.getClass().getName() + ": " + e.getMessage());
@@ -131,11 +129,16 @@ public class MySQLTripDAO implements TripDAO {
                 Date tripDate=rs.getDate("TRIP_DATE");
                 String vehicle = rs.getString("VEHICLE");
                 String path = rs.getString("PATH");
-                String mainStages = rs.getString("MAIN_STAGES");
                 UserDAO userDAO = UserDAOFactory.getUserDAO();
                 Optional<User> optionalUser = userDAO.findById(userId);
                 User user = optionalUser.isPresent() ? optionalUser.get() : null;
-                trips.add(new Trip(tripId, name,tripDate, vehicle, path, mainStages, user));
+
+
+                Gson gson = new Gson();
+                LinkedTreeMap pathanalyzed = gson.fromJson(path,LinkedTreeMap.class);
+
+
+                trips.add(new Trip(tripId, name,tripDate, vehicle, pathanalyzed, user));
             }
         } catch (SQLException e) {
             logger.debug(e.getClass().getName() + ": " + e.getMessage());
@@ -158,12 +161,11 @@ public class MySQLTripDAO implements TripDAO {
         try {
             stmt = connection.prepareStatement(INSERT_TRIP);
             stmt.setString(1, trip.getName());
-
+            Gson gson = new Gson();
 
             stmt.setDate(2, new Date(trip.getTripDate().getTime()));
             stmt.setString(3, trip.getVehicle());
-            stmt.setObject(4, trip.getPath());
-            stmt.setString(5, trip.getMainStages());
+            stmt.setString(4, gson.toJson(trip.getPath()));
             stmt.setInt(6, trip.getUser().getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -183,21 +185,14 @@ public class MySQLTripDAO implements TripDAO {
         //TODO check trip different from null
         logger.debug("deleteTrip: " + trip.getId());
         PreparedStatement stmt = null;
-        ResultSet rs = null;
         try {
-            stmt = connection.prepareStatement(SELECT_TRIP_BY_ID);
+            stmt = connection.prepareStatement(DELETE_TRIP_BY_ID);
             stmt.setInt(1, trip.getId());
-            rs = stmt.executeQuery();
-            if (rs.next()) {
-                return true;
-            } else {
-                return false;
-            }
+            stmt.executeUpdate();
         } catch (SQLException e) {
             logger.debug(e.getClass().getName() + ": " + e.getMessage());
         } finally {
             try {
-                rs.close();
                 stmt.close();
             } catch (SQLException e) {
                 logger.warn(e.getMessage());
@@ -236,12 +231,6 @@ public class MySQLTripDAO implements TripDAO {
                 comma = true;
                 prepare.add(trip.getPath());
             }*/
-            if (trip.getMainStages() != null) {
-                if (comma) query.append(",");
-                query.append("MAIN_STAGES=?");
-                comma = true;
-                prepare.add(trip.getMainStages());
-            }
             List<Integer> prepareInteger = new ArrayList<Integer>();
             // int value
             if (trip.getUser() != null) {

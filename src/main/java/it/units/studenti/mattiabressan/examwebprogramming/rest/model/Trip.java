@@ -1,6 +1,9 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.model;
 
 
+//import javax.json.JsonObject;
+import com.google.gson.internal.LinkedTreeMap;
+import org.codehaus.jettison.json.JSONObject;
 import java.sql.Date;
 
 public class Trip {
@@ -8,37 +11,33 @@ public class Trip {
     private String name;
     private Date tripDate;
     private String vehicle;
-    private Object path;
-    private String mainStages;
+    private LinkedTreeMap path;
     private User user;
 
     public Trip() {
     }
 
-    public Trip(String name, Date tripDate, String vehicle, String path, String mainStages) {
+    public Trip(String name, Date tripDate, String vehicle, LinkedTreeMap path) {
         this.name = name;
         this.tripDate = tripDate;
         this.vehicle = vehicle;
         this.path = path;
-        this.mainStages = mainStages;
     }
 
-    public Trip(String name, Date tripDate, String vehicle, String path, String mainStages, User user) {
+    public Trip(String name, Date tripDate, String vehicle, LinkedTreeMap path, User user) {
         this.name = name;
         this.tripDate = tripDate;
         this.vehicle = vehicle;
         this.path = path;
-        this.mainStages = mainStages;
         this.user = user;
     }
 
-    public Trip(Integer id, String name, Date tripDate, String vehicle, String path, String mainStages, User user) {
+    public Trip(Integer id, String name, Date tripDate, String vehicle, LinkedTreeMap path,  User user) {
         this.id = id;
         this.name = name;
         this.tripDate = tripDate;
         this.vehicle = vehicle;
         this.path = path;
-        this.mainStages = mainStages;
         this.user = user;
     }
 
@@ -60,10 +59,6 @@ public class Trip {
 
     public Date getTripDate() {
         return tripDate;
-    }
-
-    public String getMainStages() {
-        return mainStages;
     }
 
     public User getUser() {
