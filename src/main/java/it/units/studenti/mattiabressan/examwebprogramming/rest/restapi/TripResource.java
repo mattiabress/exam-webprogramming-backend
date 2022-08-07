@@ -2,6 +2,7 @@ package it.units.studenti.mattiabressan.examwebprogramming.rest.restapi;
 
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.TripDAO;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.TripDAOFactory;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.UserDAO;
@@ -28,7 +29,7 @@ public class TripResource extends ResourceConfig {
     @RolesAllowed({"admin", "user"})
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTrips(@Context HttpHeaders headers) {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         // return only user's trips or if he is a admin all trips
         Integer userId = RequestUtility.getIdFromHeaders(headers);
         String role = RequestUtility.getRoleFromHeaders(headers);
@@ -47,7 +48,7 @@ public class TripResource extends ResourceConfig {
     @RolesAllowed({"admin", "user"})
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTrip(@Context HttpHeaders headers, @PathParam("id") int id) {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         TripDAO tripDAO = TripDAOFactory.getTripDAO();
         Integer userId = RequestUtility.getIdFromHeaders(headers);
         String role = RequestUtility.getRoleFromHeaders(headers);
@@ -57,7 +58,7 @@ public class TripResource extends ResourceConfig {
             if (optionalTrip.isPresent()) {
                 Trip trip = optionalTrip.get();
                 if (role.equals("admin") || trip.getUser().getId() == userId)
-                    return Response.ok(optionalTrip.get()).build();
+                    return Response.ok(gson.toJson(optionalTrip.get()) ).build();
                 else
                     return ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED);
             } else
@@ -78,7 +79,7 @@ public class TripResource extends ResourceConfig {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createTrip(@Context HttpHeaders headers, String tripJsonString) { //create new trip
-        Gson gson = new Gson(); //TODO sistemare in String
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create(); //TODO sistemare in String
         Trip trip = gson.fromJson(tripJsonString, Trip.class);
         Integer userId = RequestUtility.getIdFromHeaders(headers);
         TripDAO tripDAO = TripDAOFactory.getTripDAO();
@@ -92,11 +93,12 @@ public class TripResource extends ResourceConfig {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({"admin", "user"})
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response setTrip(String tripJsonString,@PathParam("id") int id) { //create new trip
         System.out.println(tripJsonString);
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         Trip trip = gson.fromJson(tripJsonString, Trip.class); //check if is correct
         trip.setId(id);
         TripDAO tripDAO=TripDAOFactory.getTripDAO();
@@ -105,22 +107,28 @@ public class TripResource extends ResourceConfig {
     }
 
 
-
-
-    /*
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({"admin", "user"})
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response deleteTrip(String tripJsonString) { //create new trip
-        System.out.println(tripJsonString);
-        Gson gson = new Gson();
-        Trip trip = gson.fromJson(tripJsonString, Trip.class); //check if is correct
-        //EntityManager em = PersistenceManager.getEntityManager();
+    public Response deleteTrip(@Context HttpHeaders headers,@PathParam("id") int id) { //create new trip
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        Integer userId = RequestUtility.getIdFromHeaders(headers);
+        String role = RequestUtility.getRoleFromHeaders(headers);
         TripDAO tripDAO=TripDAOFactory.getTripDAO();
-        tripDAO.save(trip);
-        return Response.status(201).entity(gson.toJson(trip)).build();
-    }*/
+        Optional<Trip> optionalTrip = tripDAO.findById(id);
+        if(optionalTrip.isPresent()){
+            Trip trip=optionalTrip.get();
+            if(role.equals("admin") || trip.getUser().getId()==userId ){
+                if(tripDAO.delete(trip))
+                    return Response.status(201).entity(gson.toJson(trip)).build();
+                else
+                    return ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED);
+            }
+
+        }
+        return ResponseBuilder.createResponse(Response.Status.NOT_FOUND);
+    }
 
 
 }

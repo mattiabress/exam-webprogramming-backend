@@ -26,7 +26,7 @@ public class MySQLTripDAO implements TripDAO {
     private static final String SELECT_ALL_TRIP_BY_USERID = "SELECT `ID`,`NAME`,`TRIP_DATE`,`VEHICLE`,`PATH`,`MAIN_STAGES`,`ID_USER` FROM `trip`";
     private static final String SELECT_TRIP_BY_ID = "SELECT `ID`,`NAME`,`TRIP_DATE`,`VEHICLE`,`PATH`,`MAIN_STAGES`,`ID_USER` FROM `trip` WHERE `ID`=?";
     private static final String CREATE_TRIP_TABLE = "CREATE TABLE `webprogramming`.`trip` ( `ID` INT NOT NULL AUTO_INCREMENT , `NAME` VARCHAR(30) NOT NULL , `TRIP_DATE` DATE NOT NULL , `VEHICLE` VARCHAR(25) NOT NULL , `PATH` JSON NOT NULL , `MAIN_STAGES` JSON NOT NULL , `ID_USER` INT NOT NULL , PRIMARY KEY (`ID`)) ENGINE = InnoDB;";
-
+    private static final String DELETE_TRIP_BY_ID= "DELETE FROM `trip` WHERE `trip`.`ID` = ?";
 
     public MySQLTripDAO(it.units.studenti.mattiabressan.examwebprogramming.rest.database.connection.Connection connection) {
         this.connection = (Connection) connection.get();
@@ -52,6 +52,13 @@ public class MySQLTripDAO implements TripDAO {
                 String path = rs.getString("PATH");
                 String mainStages = rs.getString("MAIN_STAGES");
                 Integer userId = rs.getInt("ID_USER");
+
+
+                //java.util.Date tripDate = new java.util.Date(tripDateSQL.getTime());
+                //System.out.println("print date");
+                //System.out.println(tripDateSQL);
+                //System.out.println(tripDate);
+
                 UserDAO userDAO = UserDAOFactory.getUserDAO();
                 Optional<User> optionalUser = userDAO.findById(userId);
                 User user = optionalUser.isPresent() ? optionalUser.get() : null;
@@ -145,12 +152,15 @@ public class MySQLTripDAO implements TripDAO {
 
     @Override
     public Optional<Trip> createTrip(Trip trip) {
+        //TODO check trip different from null
         logger.debug("createTrip: " + trip.getName());
         PreparedStatement stmt = null;
         try {
             stmt = connection.prepareStatement(INSERT_TRIP);
             stmt.setString(1, trip.getName());
-            stmt.setDate(2, trip.getTripDate());
+
+
+            stmt.setDate(2, new Date(trip.getTripDate().getTime()));
             stmt.setString(3, trip.getVehicle());
             stmt.setObject(4, trip.getPath());
             stmt.setString(5, trip.getMainStages());
@@ -170,7 +180,30 @@ public class MySQLTripDAO implements TripDAO {
 
     @Override
     public boolean delete(Trip trip) {
-        return false;
+        //TODO check trip different from null
+        logger.debug("deleteTrip: " + trip.getId());
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = connection.prepareStatement(SELECT_TRIP_BY_ID);
+            stmt.setInt(1, trip.getId());
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            logger.debug(e.getClass().getName() + ": " + e.getMessage());
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+            } catch (SQLException e) {
+                logger.warn(e.getMessage());
+            }
+        }
+        return true;
     }
 
     @Override

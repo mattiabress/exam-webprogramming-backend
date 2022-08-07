@@ -1,5 +1,6 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.model;
 
+
 import java.sql.Date;
 
 public class Trip {
