@@ -17,8 +17,6 @@ import java.util.Optional;
 public class MySQLTripDAO implements TripDAO {
     public final static Logger logger = Logger.getLogger(MySQLTripDAO.class);
     private Connection connection = null;
-
-
     private static final String INSERT_TRIP = "INSERT INTO `trip` (`NAME`,`TRIP_DATE`, `VEHICLE`, `PATH`,  `ID_USER`) VALUES (?,?,?,?,?)";
     private static final String SELECT_ALL_TRIP = "SELECT `ID`,`NAME`,`TRIP_DATE`,`VEHICLE`,`PATH`,`ID_USER` FROM `trip`";
     private static final String SELECT_ALL_TRIP_BY_USERID = "SELECT `ID`,`NAME`,`TRIP_DATE`,`VEHICLE`,`PATH`,`ID_USER` FROM `trip`";
@@ -166,7 +164,7 @@ public class MySQLTripDAO implements TripDAO {
             stmt.setDate(2, new Date(trip.getTripDate().getTime()));
             stmt.setString(3, trip.getVehicle());
             stmt.setString(4, gson.toJson(trip.getPath()));
-            stmt.setInt(6, trip.getUser().getId());
+            stmt.setInt(5, trip.getUser().getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
             logger.debug(e.getClass().getName() + ": " + e.getMessage());

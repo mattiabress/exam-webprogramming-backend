@@ -80,20 +80,14 @@ public class TripResource extends ResourceConfig {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createTrip(@Context HttpHeaders headers, String tripJsonString) { //create new trip
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create(); //TODO sistemare in String
-        Trip trip =null;
-        try{
-             trip = gson.fromJson(tripJsonString, Trip.class);
-        }catch (Exception e){
-            System.out.println(e); //Path LinkedTreeMap
-        }
-        System.out.println(trip.getPath());
+        Trip trip = gson.fromJson(tripJsonString, Trip.class); //TODO mettere try catch
         Integer userId = RequestUtility.getIdFromHeaders(headers);
         TripDAO tripDAO = TripDAOFactory.getTripDAO();
         UserDAO userDAO = UserDAOFactory.getUserDAO();
         User user = userDAO.findById(userId).get();
         trip.setUser(user);
-        //tripDAO.save(trip);
         tripDAO.createTrip(trip);
+
         return Response.status(201).entity(gson.toJson(trip)).build();
     }
 
@@ -102,15 +96,20 @@ public class TripResource extends ResourceConfig {
     @RolesAllowed({"admin", "user"})
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response setTrip(String tripJsonString,@PathParam("id") int id) { //create new trip
-        System.out.println(tripJsonString);
+    public Response setTrip(String tripJsonString,@PathParam("id") int id) {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        Trip trip = gson.fromJson(tripJsonString, Trip.class); //check if is correct
-
-        trip.setId(id);
         TripDAO tripDAO=TripDAOFactory.getTripDAO();
-        tripDAO.update(trip);
-        return Response.status(201).entity(gson.toJson(trip)).build();
+        Optional<Trip> optionalTrip =  tripDAO.findById(id);
+        if(optionalTrip.isPresent()){
+            Trip trip = gson.fromJson(tripJsonString, Trip.class); //check if is correct
+            trip.setId(optionalTrip.get().getId());
+            tripDAO.update(trip);
+            return Response.status(201).entity(gson.toJson(trip)).build();
+        }
+
+        return ResponseBuilder.createResponse(Response.Status.NOT_FOUND);
+
+
     }
 
 
