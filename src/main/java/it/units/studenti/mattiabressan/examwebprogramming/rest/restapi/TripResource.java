@@ -24,10 +24,7 @@ import java.util.Optional;
 @DeclareRoles({"admin", "user", "guest"})
 @Path("/trip")
 public class TripResource extends ResourceConfig {
-
-
     @GET
-    @Path("/")
     @RolesAllowed({"admin", "user"})
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTrips(@Context HttpHeaders headers) {

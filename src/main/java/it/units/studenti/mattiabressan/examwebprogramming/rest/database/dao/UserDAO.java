@@ -19,7 +19,7 @@ public interface UserDAO {
     public Optional<UserSecurity> setUserAuthentication( UserSecurity user );
     public Optional<User> updateUser( User user ) ;
     public boolean deleteUser( Integer id ) ;
-
+    public boolean logout( Integer id ) ;
 
 
     //public boolean createUser( UserSecurity user ) throws UserExistingException;

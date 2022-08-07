@@ -115,6 +115,30 @@ public class UserResource extends ResourceConfig {
     }
 
     @DELETE
+    @Path("/logout")
+    @RolesAllowed({"admin", "user"}) // Only admin or user himself can delete a certain user
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response logout(@Context HttpHeaders headers) {
+        UserDAO userDao = UserDAOFactory.getUserDAO();
+        try {
+            Integer userId=RequestUtility.getIdFromHeaders(headers);
+
+            if(userDao.logout(userId))
+                return ResponseBuilder.createResponse(Response.Status.OK, "User logout");
+            else
+                return ResponseBuilder.createResponse(Response.Status.INTERNAL_SERVER_ERROR, "User not logout"); //TODO sistemare ERR al posto
+
+        } catch (UserNotFoundException e) {
+            return ResponseBuilder.createResponse(Response.Status.NOT_FOUND, e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED);
+        }
+
+    }
+
+
+    @DELETE
     @Path("/{id}")
     @RolesAllowed({"admin", "user"}) // Only admin or user himself can delete a certain user
     @Produces(MediaType.APPLICATION_JSON)

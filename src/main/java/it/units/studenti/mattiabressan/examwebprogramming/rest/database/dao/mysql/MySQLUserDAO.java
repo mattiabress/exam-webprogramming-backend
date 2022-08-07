@@ -30,7 +30,7 @@ public class MySQLUserDAO implements UserDAO {
     private static final String SELECT_USER_BY_USERNAME="SELECT id, firstname, lastname, email,username FROM USER WHERE username=?;";
     private static final String SELECT_USER_AUTHENTICATION_BY_ID="SELECT email, password, token, role,username FROM USER WHERE id=?;";
     private static final String DELETE_USER_BY_ID="DELETE FROM USER WHERE id=?";
-
+    private static final String LOGOUT_USER_BY_ID="UPDATE `user` SET `TOKEN` = NULL WHERE `user`.`ID` = ?";
     public MySQLUserDAO(it.units.studenti.mattiabressan.examwebprogramming.rest.database.connection.Connection connection) {
         this.connection = (Connection) connection.get();
     }
@@ -366,6 +366,26 @@ public class MySQLUserDAO implements UserDAO {
         PreparedStatement stmt = null;
         try {
             stmt = connection.prepareStatement(DELETE_USER_BY_ID);
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            logger.debug(e.getClass().getName() + ": " + e.getMessage());
+        } finally {
+            try {
+                stmt.close();
+            } catch (SQLException e) {
+                logger.warn(e.getMessage());
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean logout(Integer id) {
+        logger.debug("logoutUser: " + id);
+        PreparedStatement stmt = null;
+        try {
+            stmt = connection.prepareStatement(LOGOUT_USER_BY_ID);
             stmt.setInt(1, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
