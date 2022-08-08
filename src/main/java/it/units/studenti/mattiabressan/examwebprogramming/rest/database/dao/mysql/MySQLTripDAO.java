@@ -205,6 +205,7 @@ public class MySQLTripDAO implements TripDAO {
         logger.debug("update Trip: " + trip.getId());
         PreparedStatement stmt = null;
         try {
+            Gson gson = new Gson();
             // prepare query
             StringBuffer query = new StringBuffer();
             query.append("UPDATE TRIP SET ");
@@ -222,13 +223,13 @@ public class MySQLTripDAO implements TripDAO {
                 query.append("VEHICLE=?");
                 comma = true;
                 prepare.add(trip.getVehicle());
-            }/* //TODO sistemare
+            }
             if (trip.getPath() != null) {
                 if (comma) query.append(",");
-                query.append("PATCH=?");
+                query.append("PATH=?");
                 comma = true;
-                prepare.add(trip.getPath());
-            }*/
+                prepare.add(gson.toJson(trip.getPath()));
+            }
             List<Integer> prepareInteger = new ArrayList<Integer>();
             // int value
             if (trip.getUser() != null) {
