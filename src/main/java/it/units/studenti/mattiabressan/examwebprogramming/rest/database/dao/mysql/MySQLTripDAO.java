@@ -245,8 +245,8 @@ public class MySQLTripDAO implements TripDAO {
                 stmt.setString(i + 1, prepare.get(i));
             }
 
-            for (int i = prepare.size(); i < prepareInteger.size(); i++) {
-                stmt.setInt(i+1, prepareInteger.get(i));
+            for (int i = 0; i < prepareInteger.size(); i++) {
+                stmt.setInt(prepare.size()+i+1, prepareInteger.get(i));
             }
 
             stmt.setInt(prepare.size()+prepareInteger.size() + 1, trip.getId());
