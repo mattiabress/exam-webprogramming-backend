@@ -152,6 +152,111 @@ public class MySQLTripDAO implements TripDAO {
     }
 
     @Override
+    public List<Trip> findAllByDates(Date startDate, Date endDate) {
+        logger.debug("findAllByDates: startDate"+startDate+" endDate"+endDate);
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<Trip> trips = new ArrayList<Trip>();
+        try {
+            String query;
+            List<Date> prepare = new ArrayList<Date>();
+            if(startDate==null && endDate==null){
+               return null;
+            }else if(startDate!=null){
+                query="SELECT * FROM `trip` WHERE `TRIP_DATE` >= ?";
+                prepare.add(startDate);
+            }else if(endDate!=null){
+                query="SELECT * FROM `trip` WHERE `TRIP_DATE`<= ? ";
+                prepare.add(endDate);
+            }else
+                query="SELECT * FROM `trip` WHERE `TRIP_DATE` BETWEEN ? AND ? ";
+
+            stmt = connection.prepareStatement(query);
+            for (int i = 0; i < prepare.size(); i++) {
+                stmt.setDate(i + 1, prepare.get(i));
+            }
+
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                Integer tripId = rs.getInt("ID");
+                String name = rs.getString("NAME");
+                Date tripDate=rs.getDate("TRIP_DATE");
+                String vehicle = rs.getString("VEHICLE");
+                String path = rs.getString("PATH");
+                UserDAO userDAO = UserDAOFactory.getUserDAO();
+                Optional<User> optionalUser = userDAO.findById(rs.getInt("ID_USER"));
+                User user = optionalUser.isPresent() ? optionalUser.get() : null;
+                Gson gson = new Gson();
+                LinkedTreeMap pathanalyzed = gson.fromJson(path,LinkedTreeMap.class);
+                trips.add(new Trip(tripId, name,tripDate, vehicle, pathanalyzed, user));
+            }
+        } catch (SQLException e) {
+            logger.debug(e.getClass().getName() + ": " + e.getMessage());
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+            } catch (SQLException e) {
+                logger.warn(e.getMessage());
+            }
+        }
+        return trips;
+    }
+
+    @Override
+    public List<Trip> findAllByDates(Date startDate, Date endDate, Integer userId) {
+        logger.debug("findAllByDates: startDate"+startDate+" endDate"+endDate+"userId:"+userId);
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<Trip> trips = new ArrayList<Trip>();
+        try {
+            String query;
+            List<Date> prepare = new ArrayList<Date>();
+            if(startDate==null && endDate==null){
+                return null;
+            }else if(startDate!=null){
+                query="SELECT * FROM `trip` WHERE `TRIP_DATE` >= ?";
+                prepare.add(startDate);
+            }else if(endDate!=null){
+                query="SELECT * FROM `trip` WHERE `TRIP_DATE`<= ? ";
+                prepare.add(endDate);
+            }else
+                query="SELECT * FROM `trip` WHERE `TRIP_DATE` BETWEEN ? AND ? ";
+            query=query+"AND ID_USER=?";
+            stmt = connection.prepareStatement(query);
+            for (int i = 0; i < prepare.size(); i++) {
+                stmt.setDate(i + 1, prepare.get(i));
+            }
+            stmt.setInt(prepare.size() + 1, userId);
+
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                Integer tripId = rs.getInt("ID");
+                String name = rs.getString("NAME");
+                Date tripDate=rs.getDate("TRIP_DATE");
+                String vehicle = rs.getString("VEHICLE");
+                String path = rs.getString("PATH");
+                UserDAO userDAO = UserDAOFactory.getUserDAO();
+                Optional<User> optionalUser = userDAO.findById(rs.getInt("ID_USER"));
+                User user = optionalUser.isPresent() ? optionalUser.get() : null;
+                Gson gson = new Gson();
+                LinkedTreeMap pathanalyzed = gson.fromJson(path,LinkedTreeMap.class);
+                trips.add(new Trip(tripId, name,tripDate, vehicle, pathanalyzed, user));
+            }
+        } catch (SQLException e) {
+            logger.debug(e.getClass().getName() + ": " + e.getMessage());
+        } finally {
+            try {
+                rs.close();
+                stmt.close();
+            } catch (SQLException e) {
+                logger.warn(e.getMessage());
+            }
+        }
+        return trips;
+    }
+
+    @Override
     public Optional<Trip> createTrip(Trip trip) {
         //TODO check trip different from null
         logger.debug("createTrip: " + trip.getName());

@@ -19,6 +19,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,8 @@ public class TripResource extends ResourceConfig {
     @GET
     @RolesAllowed({"admin", "user"})
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTrips(@Context HttpHeaders headers) {
+    public Response getTrips(@Context HttpHeaders headers,@QueryParam("startdate") Date startDate,@QueryParam("enddate") Date endDate) {
+        //TODO aggiungere se ha filtro
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         // return only user's trips or if he is a admin all trips
         Integer userId = RequestUtility.getIdFromHeaders(headers);
@@ -36,10 +38,16 @@ public class TripResource extends ResourceConfig {
         TripDAO tripDAO = TripDAOFactory.getTripDAO();
         List<Trip> trips;
         if (role.equals("admin"))
-            trips = tripDAO.findAll();
-        else // user
-            trips = tripDAO.findAllByUserId(userId);
+            if(startDate!=null || endDate!=null)
+                trips=tripDAO.findAllByDates(startDate,endDate);
+            else
+                trips = tripDAO.findAll();
 
+        else // user
+            if(startDate!=null || endDate!=null)
+                trips=tripDAO.findAllByDates(startDate,endDate,userId);
+            else
+                trips = tripDAO.findAllByUserId(userId);
         return Response.ok(gson.toJson(trips)).build();
     }
 
@@ -70,9 +78,7 @@ public class TripResource extends ResourceConfig {
             e.printStackTrace();
             return ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED);
         }
-
     }
-
 
     @POST
     @RolesAllowed({"admin", "user"})
