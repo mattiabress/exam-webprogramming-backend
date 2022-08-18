@@ -320,12 +320,12 @@ public class MySQLTripDAO implements TripDAO {
 
             boolean comma = false;
             List<String> prepare = new ArrayList<String>();
+            List<Date> prepareDate=new ArrayList<Date>();
             if (trip.getName() != null) {
                 query.append("NAME=?");
                 comma = true;
                 prepare.add(trip.getName());
             }
-
             if (trip.getVehicle() != null) {
                 if (comma) query.append(",");
                 query.append("VEHICLE=?");
@@ -338,6 +338,13 @@ public class MySQLTripDAO implements TripDAO {
                 comma = true;
                 prepare.add(gson.toJson(trip.getPath()));
             }
+            if (trip.getTripDate() != null) {
+                if (comma) query.append(",");
+                query.append("TRIP_DATE=?");
+                comma = true;
+                prepareDate.add(trip.getTripDate());
+            }
+
             List<Integer> prepareInteger = new ArrayList<Integer>();
             // int value
             if (trip.getUser() != null) {
@@ -346,18 +353,18 @@ public class MySQLTripDAO implements TripDAO {
                 prepareInteger.add(trip.getUser().getId());
             }
             query.append(" WHERE id=?");
-
             stmt = connection.prepareStatement(query.toString());
-
             for (int i = 0; i < prepare.size(); i++) {
                 stmt.setString(i + 1, prepare.get(i));
             }
-
+            for (int i = 0; i < prepareDate.size(); i++) {
+                stmt.setDate(prepare.size()+i+ 1, prepareDate.get(i));
+            }
             for (int i = 0; i < prepareInteger.size(); i++) {
-                stmt.setInt(prepare.size()+i+1, prepareInteger.get(i));
+                stmt.setInt(prepare.size()+prepareDate.size()+i+1, prepareInteger.get(i));
             }
 
-            stmt.setInt(prepare.size()+prepareInteger.size() + 1, trip.getId());
+            stmt.setInt(prepare.size()+prepareInteger.size()+prepareDate.size() + 1, trip.getId());
 
             stmt.executeUpdate();
 
