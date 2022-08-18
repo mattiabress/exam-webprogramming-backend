@@ -158,17 +158,20 @@ public class MySQLTripDAO implements TripDAO {
         ResultSet rs = null;
         List<Trip> trips = new ArrayList<Trip>();
         try {
-            String query;
+            String query="";
             List<Date> prepare = new ArrayList<Date>();
             if(startDate==null && endDate==null){
-               return null;
-            }else if(startDate!=null){
+               return trips;
+            }
+            if(startDate!=null){
                 query="SELECT * FROM `trip` WHERE `TRIP_DATE` >= ?";
                 prepare.add(startDate);
-            }else if(endDate!=null){
+            }
+            if(endDate!=null){
                 query="SELECT * FROM `trip` WHERE `TRIP_DATE`<= ? ";
                 prepare.add(endDate);
-            }else
+            }
+            if(startDate!=null && endDate!=null)
                 query="SELECT * FROM `trip` WHERE `TRIP_DATE` BETWEEN ? AND ? ";
 
             stmt = connection.prepareStatement(query);
@@ -213,7 +216,7 @@ public class MySQLTripDAO implements TripDAO {
             String query;
             List<Date> prepare = new ArrayList<Date>();
             if(startDate==null && endDate==null){
-                return null;
+                return trips;
             }else if(startDate!=null){
                 query="SELECT * FROM `trip` WHERE `TRIP_DATE` >= ?";
                 prepare.add(startDate);

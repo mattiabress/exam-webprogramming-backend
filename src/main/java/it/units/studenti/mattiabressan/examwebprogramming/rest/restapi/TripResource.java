@@ -29,26 +29,29 @@ public class TripResource extends ResourceConfig {
     @GET
     @RolesAllowed({"admin", "user"})
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTrips(@Context HttpHeaders headers,@QueryParam("startdate") Date startDate,@QueryParam("enddate") Date endDate) {
-        //TODO aggiungere se ha filtro
+    public Response getTrips(@Context HttpHeaders headers, @QueryParam("startdate") Date startDate, @QueryParam("enddate") Date endDate) {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        // return only user's trips or if he is a admin all trips
-        Integer userId = RequestUtility.getIdFromHeaders(headers);
-        String role = RequestUtility.getRoleFromHeaders(headers);
-        TripDAO tripDAO = TripDAOFactory.getTripDAO();
-        List<Trip> trips;
-        if (role.equals("admin"))
-            if(startDate!=null || endDate!=null)
-                trips=tripDAO.findAllByDates(startDate,endDate);
-            else
-                trips = tripDAO.findAll();
-
-        else // user
-            if(startDate!=null || endDate!=null)
-                trips=tripDAO.findAllByDates(startDate,endDate,userId);
-            else
-                trips = tripDAO.findAllByUserId(userId);
-        return Response.ok(gson.toJson(trips)).build();
+        try {
+            // return only user's trips or if he is a admin all trips
+            Integer userId = RequestUtility.getIdFromHeaders(headers);
+            String role = RequestUtility.getRoleFromHeaders(headers);
+            TripDAO tripDAO = TripDAOFactory.getTripDAO();
+            List<Trip> trips;
+            if (role.equals("admin"))
+                if (startDate != null || endDate != null)
+                    trips = tripDAO.findAllByDates(startDate, endDate);
+                else
+                    trips = tripDAO.findAll();
+            else // user
+                if (startDate != null || endDate != null)
+                    trips = tripDAO.findAllByDates(startDate, endDate, userId);
+                else
+                    trips = tripDAO.findAllByUserId(userId);
+            //return Response.ok(gson.toJson(trips)).build();
+            return Response.status(Response.Status.OK).entity(gson.toJson(trips)).build();
+        } catch (Exception e) {
+            return ResponseBuilder.createResponse(Response.Status.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GET
@@ -57,21 +60,21 @@ public class TripResource extends ResourceConfig {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTrip(@Context HttpHeaders headers, @PathParam("id") int id) {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        TripDAO tripDAO = TripDAOFactory.getTripDAO();
-        Integer userId = RequestUtility.getIdFromHeaders(headers);
-        String role = RequestUtility.getRoleFromHeaders(headers);
         try {
+            TripDAO tripDAO = TripDAOFactory.getTripDAO();
+            Integer userId = RequestUtility.getIdFromHeaders(headers);
+            String role = RequestUtility.getRoleFromHeaders(headers);
             // Search for a trip by ID
             Optional<Trip> optionalTrip = tripDAO.findById(id);
             if (optionalTrip.isPresent()) {
                 Trip trip = optionalTrip.get();
                 if (role.equals("admin") || trip.getUser().getId() == userId)
-                    return Response.ok(gson.toJson(optionalTrip.get()) ).build();
+                    // return Response.ok(gson.toJson(optionalTrip.get())).build();
+                    return Response.status(Response.Status.OK).entity(gson.toJson(optionalTrip.get())).build();
                 else
                     return ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED);
             } else
                 throw new TripNotFoundException(id);
-
         } catch (TripNotFoundException e) {
             return ResponseBuilder.createResponse(Response.Status.NOT_FOUND, e.getMessage());
         } catch (Exception e) {
@@ -85,16 +88,24 @@ public class TripResource extends ResourceConfig {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createTrip(@Context HttpHeaders headers, String tripJsonString) { //create new trip
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create(); //TODO sistemare in String
-        Trip trip = gson.fromJson(tripJsonString, Trip.class); //TODO mettere try catch
-        Integer userId = RequestUtility.getIdFromHeaders(headers);
-        TripDAO tripDAO = TripDAOFactory.getTripDAO();
-        UserDAO userDAO = UserDAOFactory.getUserDAO();
-        User user = userDAO.findById(userId).get();
-        trip.setUser(user);
-        tripDAO.createTrip(trip);
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        try {
+            Trip trip = gson.fromJson(tripJsonString, Trip.class);
+            Integer userId = RequestUtility.getIdFromHeaders(headers);
+            TripDAO tripDAO = TripDAOFactory.getTripDAO();
+            UserDAO userDAO = UserDAOFactory.getUserDAO();
+            User user = userDAO.findById(userId).get();
+            trip.setUser(user);
+            Optional<Trip> optionalTrip = tripDAO.createTrip(trip);
+            if (optionalTrip.isPresent())
+                //return Response.status(201).entity(gson.toJson(trip)).build();
+                return Response.status(Response.Status.CREATED).entity(gson.toJson(optionalTrip.get())).build();
+            else
+                return ResponseBuilder.createResponse(Response.Status.CONFLICT);
+        } catch (Exception e) {
+            return ResponseBuilder.createResponse(Response.Status.INTERNAL_SERVER_ERROR);
+        }
 
-        return Response.status(201).entity(gson.toJson(trip)).build();
     }
 
     @PUT
@@ -102,46 +113,57 @@ public class TripResource extends ResourceConfig {
     @RolesAllowed({"admin", "user"})
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response setTrip(String tripJsonString,@PathParam("id") int id) {
+    public Response setTrip(String tripJsonString, @PathParam("id") int id) {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        TripDAO tripDAO=TripDAOFactory.getTripDAO();
-        Optional<Trip> optionalTrip =  tripDAO.findById(id);
-        if(optionalTrip.isPresent()){
-            Trip trip = gson.fromJson(tripJsonString, Trip.class); //check if is correct
-            trip.setId(optionalTrip.get().getId());
-            tripDAO.update(trip);
-            return Response.status(201).entity(gson.toJson(trip)).build();
+        try {
+            TripDAO tripDAO = TripDAOFactory.getTripDAO();
+            Optional<Trip> optionalTrip = tripDAO.findById(id);
+            if (optionalTrip.isPresent()) { //check if trip exists
+                Trip trip = gson.fromJson(tripJsonString, Trip.class); //check if is correct
+                trip.setId(optionalTrip.get().getId());
+                Optional<Trip> optionalTripupdated = tripDAO.update(trip);
+                if (optionalTripupdated.isPresent()) //if trip is updated correctly
+                    //return Response.status(201).entity(gson.toJson(trip)).build();
+                    return Response.status(Response.Status.OK).entity(gson.toJson(optionalTripupdated.get())).build();
+                else
+                    return ResponseBuilder.createResponse(Response.Status.CONFLICT);
+            }
+            return ResponseBuilder.createResponse(Response.Status.NOT_FOUND);
+        } catch (Exception e) {
+            return ResponseBuilder.createResponse(Response.Status.INTERNAL_SERVER_ERROR);
         }
 
-        return ResponseBuilder.createResponse(Response.Status.NOT_FOUND);
-
-
     }
-
 
     @DELETE
     @Path("/{id}")
     @RolesAllowed({"admin", "user"})
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteTrip(@Context HttpHeaders headers,@PathParam("id") int id) { //create new trip
+    public Response deleteTrip(@Context HttpHeaders headers, @PathParam("id") int id) { //create new trip
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         //Gson gson = new GsonBuilder().registerTypeAdapterFactory()
-
-        Integer userId = RequestUtility.getIdFromHeaders(headers);
-        String role = RequestUtility.getRoleFromHeaders(headers);
-        TripDAO tripDAO=TripDAOFactory.getTripDAO();
-        Optional<Trip> optionalTrip = tripDAO.findById(id);
-        if(optionalTrip.isPresent()){
-            Trip trip=optionalTrip.get();
-            if(role.equals("admin") || trip.getUser().getId()==userId ){
-                if(tripDAO.delete(trip))
-                    return Response.status(201).entity(gson.toJson(trip)).build();
-                else
-                    return ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED);
+        try {
+            Integer userId = RequestUtility.getIdFromHeaders(headers);
+            String role = RequestUtility.getRoleFromHeaders(headers);
+            TripDAO tripDAO = TripDAOFactory.getTripDAO();
+            Optional<Trip> optionalTrip = tripDAO.findById(id);
+            if (optionalTrip.isPresent()) {
+                Trip trip = optionalTrip.get();
+                if (role.equals("admin") || trip.getUser().getId() == userId) {
+                    if (tripDAO.delete(trip))
+                        //return Response.status(201).entity(gson.toJson(trip)).build();
+                        return Response.status(Response.Status.OK).entity(gson.toJson(trip)).build();
+                    else
+                        return ResponseBuilder.createResponse(Response.Status.CONFLICT);
+                }
+                return ResponseBuilder.createResponse(Response.Status.UNAUTHORIZED);
             }
-
+            return ResponseBuilder.createResponse(Response.Status.NOT_FOUND);
+        } catch (Exception e) {
+            return ResponseBuilder.createResponse(Response.Status.INTERNAL_SERVER_ERROR);
         }
-        return ResponseBuilder.createResponse(Response.Status.NOT_FOUND);
+
+
     }
 
 
