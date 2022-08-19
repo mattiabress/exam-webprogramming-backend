@@ -11,6 +11,8 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.eclipse.collections.impl.lazy.parallel.set.sorted.SelectSortedSetBatch;
 import org.glassfish.jersey.server.ResourceConfig;
 
@@ -65,6 +67,7 @@ public class UserResource extends ResourceConfig {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response authenticate(Credentials credentials) {
         UserDAO userDao = UserDAOFactory.getUserDAO();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         try {
             Optional<User> optionalUser = userDao.findByUsername(credentials.getUsername());
             if (optionalUser.isEmpty()) {
@@ -86,6 +89,7 @@ public class UserResource extends ResourceConfig {
             userDao.setUserAuthentication(sec);
             Map<String, Object> map = new HashMap<String, Object>();
             map.put(AuthenticationFilter.AUTHORIZATION_PROPERTY, token);
+            map.put("userinfo",gson.toJson(user));
             // Return the token on the response
             return ResponseBuilder.createResponse(Response.Status.OK, map);
         } catch (UserNotFoundException e) {
