@@ -82,7 +82,7 @@ public class MySQLConnection implements it.units.studenti.mattiabressan.examwebp
         try {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT table_schema AS database_name, table_name FROM information_schema.tables WHERE table_schema='" +
-                    DbConfig.getDbName()+"' and table_name='user'");
+                    DbConfig.getDbName()+"' and table_name='USER'");
             if (rs.next()) {
                 return true;
             }
@@ -99,7 +99,7 @@ public class MySQLConnection implements it.units.studenti.mattiabressan.examwebp
 
         try {
             Statement stmt = connection.createStatement();
-            String sql = "CREATE TABLE `webprogramming`.`user` ( " +
+            String sql = "CREATE TABLE `webprogramming`.`USER` ( " +
                     "`ID` INT NOT NULL AUTO_INCREMENT , " +
                     "`EMAIL` VARCHAR(50) NOT NULL , " +
                     "`USERNAME` VARCHAR(50) NOT NULL , " +
@@ -122,7 +122,7 @@ public class MySQLConnection implements it.units.studenti.mattiabressan.examwebp
     private boolean checkForAdminUser() {
         try {
             Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT `USERNAME` FROM `user` WHERE `USERNAME`='root';");
+            ResultSet rs = stmt.executeQuery("SELECT `USERNAME` FROM `USER` WHERE `USERNAME`='root';");
             if (rs.next()) {
                 return true;
             }
@@ -156,7 +156,7 @@ public class MySQLConnection implements it.units.studenti.mattiabressan.examwebp
         PreparedStatement stmt = null;
 
         try {
-            stmt = connection.prepareStatement("INSERT INTO `user` (`ID`, `EMAIL`, `USERNAME`, `FIRSTNAME`, `LASTNAME`, `PASSWORD`,  `ROLE`) " +
+            stmt = connection.prepareStatement("INSERT INTO `USER` (`ID`, `EMAIL`, `USERNAME`, `FIRSTNAME`, `LASTNAME`, `PASSWORD`,  `ROLE`) " +
                             "VALUES (NULL, ?,?,?, ?, ?,?)"
                     );
 
@@ -188,7 +188,7 @@ public class MySQLConnection implements it.units.studenti.mattiabressan.examwebp
         PreparedStatement stmt = null;
 
         try {
-            stmt = connection.prepareStatement("INSERT INTO `user` (`ID`, `EMAIL`, `USERNAME`, `FIRSTNAME`, `LASTNAME`, `PASSWORD`,  `ROLE`) " +
+            stmt = connection.prepareStatement("INSERT INTO `USER` (`ID`, `EMAIL`, `USERNAME`, `FIRSTNAME`, `LASTNAME`, `PASSWORD`,  `ROLE`) " +
                     "VALUES (NULL, ?,?,?, ?, ?,?)"
             );
 
@@ -233,7 +233,7 @@ public class MySQLConnection implements it.units.studenti.mattiabressan.examwebp
         try {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT table_schema AS database_name, table_name FROM information_schema.tables WHERE table_schema='" +
-                    DbConfig.getDbName()+"' and table_name='trip'");
+                    DbConfig.getDbName()+"' and table_name='TRIP'");
             if (rs.next()) {
                 return true;
             }

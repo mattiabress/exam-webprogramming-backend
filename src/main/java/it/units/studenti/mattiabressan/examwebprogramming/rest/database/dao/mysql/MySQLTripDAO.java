@@ -17,12 +17,12 @@ import java.util.Optional;
 public class MySQLTripDAO implements TripDAO {
     public final static Logger logger = Logger.getLogger(MySQLTripDAO.class);
     private Connection connection = null;
-    private static final String INSERT_TRIP = "INSERT INTO `trip` (`NAME`,`TRIP_DATE`, `VEHICLE`, `PATH`,  `ID_USER`) VALUES (?,?,?,?,?)";
-    private static final String SELECT_ALL_TRIP = "SELECT `ID`,`NAME`,`TRIP_DATE`,`VEHICLE`,`PATH`,`ID_USER` FROM `trip`";
-    private static final String SELECT_ALL_TRIP_BY_USERID = "SELECT `ID`,`NAME`,`TRIP_DATE`,`VEHICLE`,`PATH`,`ID_USER` FROM `trip` WHERE `ID_USER`=?";
-    private static final String SELECT_TRIP_BY_ID = "SELECT `ID`,`NAME`,`TRIP_DATE`,`VEHICLE`,`PATH`,`ID_USER` FROM `trip` WHERE `ID`=?";
-    public static final String CREATE_TRIP_TABLE = "CREATE TABLE `webprogramming`.`trip` ( `ID` INT NOT NULL AUTO_INCREMENT , `NAME` VARCHAR(30) NOT NULL , `TRIP_DATE` DATE NOT NULL , `VEHICLE` VARCHAR(25) NOT NULL , `PATH` JSON NOT NULL ,`ID_USER` INT NOT NULL , PRIMARY KEY (`ID`)) ENGINE = InnoDB;";
-    private static final String DELETE_TRIP_BY_ID= "DELETE FROM `trip` WHERE `trip`.`ID` = ?";
+    private static final String INSERT_TRIP = "INSERT INTO `TRIP` (`NAME`,`TRIP_DATE`, `VEHICLE`, `PATH`,  `ID_USER`) VALUES (?,?,?,?,?)";
+    private static final String SELECT_ALL_TRIP = "SELECT `ID`,`NAME`,`TRIP_DATE`,`VEHICLE`,`PATH`,`ID_USER` FROM `TRIP`";
+    private static final String SELECT_ALL_TRIP_BY_USERID = "SELECT `ID`,`NAME`,`TRIP_DATE`,`VEHICLE`,`PATH`,`ID_USER` FROM `TRIP` WHERE `ID_USER`=?";
+    private static final String SELECT_TRIP_BY_ID = "SELECT `ID`,`NAME`,`TRIP_DATE`,`VEHICLE`,`PATH`,`ID_USER` FROM `TRIP` WHERE `ID`=?";
+    public static final String CREATE_TRIP_TABLE = "CREATE TABLE `webprogramming`.`TRIP` ( `ID` INT NOT NULL AUTO_INCREMENT , `NAME` VARCHAR(30) NOT NULL , `TRIP_DATE` DATE NOT NULL , `VEHICLE` VARCHAR(25) NOT NULL , `PATH` JSON NOT NULL ,`ID_USER` INT NOT NULL , PRIMARY KEY (`ID`)) ENGINE = InnoDB;";
+    private static final String DELETE_TRIP_BY_ID= "DELETE FROM `TRIP` WHERE `TRIP`.`ID` = ?";
 
     public MySQLTripDAO(it.units.studenti.mattiabressan.examwebprogramming.rest.database.connection.Connection connection) {
         this.connection = (Connection) connection.get();
@@ -164,15 +164,15 @@ public class MySQLTripDAO implements TripDAO {
                return trips;
             }
             if(startDate!=null){
-                query="SELECT * FROM `trip` WHERE `TRIP_DATE` >= ?";
+                query="SELECT * FROM `TRIP` WHERE `TRIP_DATE` >= ?";
                 prepare.add(startDate);
             }
             if(endDate!=null){
-                query="SELECT * FROM `trip` WHERE `TRIP_DATE`<= ? ";
+                query="SELECT * FROM `TRIP` WHERE `TRIP_DATE`<= ? ";
                 prepare.add(endDate);
             }
             if(startDate!=null && endDate!=null)
-                query="SELECT * FROM `trip` WHERE `TRIP_DATE` BETWEEN ? AND ? ";
+                query="SELECT * FROM `TRIP` WHERE `TRIP_DATE` BETWEEN ? AND ? ";
 
             stmt = connection.prepareStatement(query);
             for (int i = 0; i < prepare.size(); i++) {
@@ -219,15 +219,15 @@ public class MySQLTripDAO implements TripDAO {
                 return trips;
             }
             if(startDate!=null){
-                query="SELECT * FROM `trip` WHERE `TRIP_DATE` >= ?";
+                query="SELECT * FROM `TRIP` WHERE `TRIP_DATE` >= ?";
                 prepare.add(startDate);
             }
             if(endDate!=null){
-                query="SELECT * FROM `trip` WHERE `TRIP_DATE`<= ? ";
+                query="SELECT * FROM `TRIP` WHERE `TRIP_DATE`<= ? ";
                 prepare.add(endDate);
             }
             if(startDate!=null && endDate!=null)
-                query="SELECT * FROM `trip` WHERE `TRIP_DATE` BETWEEN ? AND ? ";
+                query="SELECT * FROM `TRIP` WHERE `TRIP_DATE` BETWEEN ? AND ? ";
             query=query+"AND ID_USER=?";
             stmt = connection.prepareStatement(query);
             for (int i = 0; i < prepare.size(); i++) {

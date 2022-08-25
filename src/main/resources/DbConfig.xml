@@ -4,7 +4,7 @@
 <Configuration>
     <dbType>MYSQL</dbType>
     <dbName>webprogramming</dbName>
-    <dbPath>jdbc:mysql://localhost:3306/webprogramming</dbPath>
+    <dbPath>jdbc:mysql://db:3306/webprogramming</dbPath> <!-- jdbc:mysql://localhost:3306/webprogramming-->
     <dbHost>localhost</dbHost>
     <dbPort>3306</dbPort>
     <dbUser>root</dbUser>

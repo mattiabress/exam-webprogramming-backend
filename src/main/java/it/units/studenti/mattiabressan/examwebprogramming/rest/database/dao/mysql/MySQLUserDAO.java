@@ -23,14 +23,14 @@ public class MySQLUserDAO implements UserDAO {
     private Connection connection = null;
 
     //query
-    private static final String INSERT_USER="INSERT INTO USER(email,username,firstname,lastname,password,role) VALUES (?,?,?,?,?,?)";
-    private static final String SELECT_ALL_USER="SELECT id, firstname, lastname, email,username FROM USER;";
-    private static final String SELECT_USER_BY_ID="SELECT id, firstname, lastname, email,username FROM USER WHERE id=?;";
-    private static final String SELECT_USER_BY_MAIL="SELECT id, firstname, lastname, email,username FROM USER WHERE email=?;";
-    private static final String SELECT_USER_BY_USERNAME="SELECT id, firstname, lastname, email,username FROM USER WHERE username=?;";
-    private static final String SELECT_USER_AUTHENTICATION_BY_ID="SELECT email, password, token, role,username FROM USER WHERE id=?;";
-    private static final String DELETE_USER_BY_ID="DELETE FROM USER WHERE id=?";
-    private static final String LOGOUT_USER_BY_ID="UPDATE `user` SET `TOKEN` = NULL WHERE `user`.`ID` = ?";
+    private static final String INSERT_USER="INSERT INTO USER(EMAIL,USERNAME,FIRSTNAME,LASTNAME,PASSWORD,ROLE) VALUES (?,?,?,?,?,?)";
+    private static final String SELECT_ALL_USER="SELECT ID, FIRSTNAME, LASTNAME, EMAIL,USERNAME FROM USER;";
+    private static final String SELECT_USER_BY_ID="SELECT ID, FIRSTNAME, LASTNAME, EMAIL,USERNAME FROM USER WHERE ID=?;";
+    private static final String SELECT_USER_BY_MAIL="SELECT ID, FIRSTNAME, LASTNAME, EMAIL,USERNAME FROM USER WHERE EMAIL=?;";
+    private static final String SELECT_USER_BY_USERNAME="SELECT ID, FIRSTNAME, LASTNAME, EMAIL,USERNAME FROM USER WHERE USERNAME=?;";
+    private static final String SELECT_USER_AUTHENTICATION_BY_ID="SELECT EMAIL, PASSWORD, TOKEN, ROLE,USERNAME FROM USER WHERE ID=?;";
+    private static final String DELETE_USER_BY_ID="DELETE FROM USER WHERE ID=?";
+    private static final String LOGOUT_USER_BY_ID="UPDATE `USER` SET `TOKEN` = NULL WHERE `USER`.`ID` = ?";
     public MySQLUserDAO(it.units.studenti.mattiabressan.examwebprogramming.rest.database.connection.Connection connection) {
         this.connection = (Connection) connection.get();
     }
@@ -45,11 +45,11 @@ public class MySQLUserDAO implements UserDAO {
             stmt = connection.prepareStatement(SELECT_ALL_USER);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                Integer userId = rs.getInt("id");
-                String email = rs.getString("email");
-                String firstname = rs.getString("firstname");
-                String lastname = rs.getString("lastname");
-                String username = rs.getString("username");
+                Integer userId = rs.getInt("ID");
+                String email = rs.getString("EMAIL");
+                String firstname = rs.getString("FIRSTNAME");
+                String lastname = rs.getString("LASTNAME");
+                String username = rs.getString("USERNAME");
                 users.add(new User(userId, email, firstname, lastname,username));
             }
         } catch (SQLException e) {
@@ -78,11 +78,11 @@ public class MySQLUserDAO implements UserDAO {
             stmt.setInt(1, id);
             rs = stmt.executeQuery();
             if (rs.next()) {
-                Integer userId = rs.getInt("id");
-                String email = rs.getString("email");
-                String firstname = rs.getString("firstname");
-                String lastname = rs.getString("lastname");
-                String username = rs.getString("username");
+                Integer userId = rs.getInt("ID");
+                String email = rs.getString("EMAIL");
+                String firstname = rs.getString("FIRSTNAME");
+                String lastname = rs.getString("LASTNAME");
+                String username = rs.getString("USERNAME");
                 user = new User(userId, email, firstname, lastname,username);
             } else {
                 return Optional.empty();
@@ -112,10 +112,10 @@ public class MySQLUserDAO implements UserDAO {
             stmt.setString(1, email);
             rs = stmt.executeQuery();
             if (rs.next()) {
-                Integer userId = rs.getInt("id");
-                String firstname = rs.getString("firstname");
-                String lastname = rs.getString("lastname");
-                String username = rs.getString("username");
+                Integer userId = rs.getInt("ID");
+                String firstname = rs.getString("FIRSTNAME");
+                String lastname = rs.getString("LASTNAME");
+                String username = rs.getString("USERNAME");
                 user = new User(userId, email, firstname, lastname,username);
             } else {
                 return Optional.empty();
@@ -149,10 +149,10 @@ public class MySQLUserDAO implements UserDAO {
             rs = stmt.executeQuery();
 
             if (rs.next()) {
-                Integer userId = rs.getInt("id");
-                String email = rs.getString("email");
-                String firstname = rs.getString("firstname");
-                String lastname = rs.getString("lastname");
+                Integer userId = rs.getInt("ID");
+                String email = rs.getString("EMAIL");
+                String firstname = rs.getString("FIRSTNAME");
+                String lastname = rs.getString("LASTNAME");
                 user = new User(userId, email, firstname, lastname,username);
             } else {
                 return Optional.empty();
@@ -220,11 +220,11 @@ public class MySQLUserDAO implements UserDAO {
             rs = stmt.executeQuery();
 
             if (rs.next()) {
-                String email = rs.getString("email");
-                String password = rs.getString("password");
-                String token = rs.getString("token");
-                String role = rs.getString("role");
-                String username = rs.getString("username");
+                String email = rs.getString("EMAIL");
+                String password = rs.getString("PASSWORD");
+                String token = rs.getString("TOKEN");
+                String role = rs.getString("ROLE");
+                String username = rs.getString("USERNAME");
 
                 userSecurity = new UserSecurity(email, password, token, role,username);
             } else {
@@ -258,30 +258,30 @@ public class MySQLUserDAO implements UserDAO {
             boolean comma = false;
             List<String> prepare = new ArrayList<String>();
             if (user.getPassword() != null) {
-                query.append("password=?");
+                query.append("PASSWORD=?");
                 comma = true;
                 prepare.add(user.getPassword());
             }
 
             if (user.getToken() != null) {
                 if (comma) query.append(",");
-                query.append("token=?");
+                query.append("TOKEN=?");
                 comma = true;
                 prepare.add(user.getToken());
             }
 
             if (user.getRole() != null) {
                 if (comma) query.append(",");
-                query.append("role=?");
+                query.append("ROLE=?");
                 comma = true;
                 prepare.add(user.getRole());
             }
             if (user.getUsername() != null) {
                 if (comma) query.append(",");
-                query.append("username=?");
+                query.append("USERNAME=?");
                 prepare.add(user.getUsername());
             }
-            query.append(" WHERE id=?");
+            query.append(" WHERE ID=?");
             stmt = connection.prepareStatement(query.toString());
             for (int i = 0; i < prepare.size(); i++) {
                 stmt.setString(i + 1, prepare.get(i));
@@ -314,30 +314,30 @@ public class MySQLUserDAO implements UserDAO {
             boolean comma = false;
             List<String> prepare = new ArrayList<String>();
             if (user.getFirstname() != null) {
-                query.append("firstname=?");
+                query.append("FIRSTNAME=?");
                 comma = true;
                 prepare.add(user.getFirstname());
             }
 
             if (user.getLastname() != null) {
                 if (comma) query.append(",");
-                query.append("lastname=?");
+                query.append("LASTNAME=?");
                 comma = true;
                 prepare.add(user.getLastname());
             }
             if (user.getUsername() != null) {
                 if (comma) query.append(",");
-                query.append("username=?");
+                query.append("USERNAME=?");
                 comma = true;
                 prepare.add(user.getUsername());
             }
             if (user.getEmail() != null) {
                 if (comma) query.append(",");
-                query.append("email=?");
+                query.append("EMAIL=?");
                 prepare.add(user.getEmail());
             }
 
-            query.append(" WHERE id=?");
+            query.append(" WHERE ID=?");
             stmt = connection.prepareStatement(query.toString());
 
             for (int i = 0; i < prepare.size(); i++) {

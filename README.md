@@ -36,5 +36,5 @@
 * https://www.baeldung.com/java-connect-mysql
 * https://mkyong.com/java/how-to-parse-json-with-gson/
 * https://devops4solutions.com/deploy-a-tomcat-application-using-docker-compose/
-* 
+* https://stackoverflow.com/questions/35510964/unable-to-connect-mysql-container-to-tomcat-container-in-docker
 
