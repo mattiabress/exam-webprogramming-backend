@@ -1,5 +1,10 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.mysql;
 
+import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.UserDAO;
+import it.units.studenti.mattiabressan.examwebprogramming.rest.model.User;
+import it.units.studenti.mattiabressan.examwebprogramming.rest.model.UserSecurity;
+import org.apache.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,14 +12,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import org.apache.log4j.Logger;
-
-import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.UserDAO;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.exception.UserExistingException;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.exception.UserNotFoundException;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.model.User;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.model.UserSecurity;
 
 public class MySQLUserDAO implements UserDAO {
 

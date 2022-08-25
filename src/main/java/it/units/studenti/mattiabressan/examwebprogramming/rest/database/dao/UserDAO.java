@@ -1,12 +1,10 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao;
 
-import java.util.List;
-import java.util.Optional;
-
-import it.units.studenti.mattiabressan.examwebprogramming.rest.exception.UserNotFoundException;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.exception.UserExistingException;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.model.User;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.model.UserSecurity;
+
+import java.util.List;
+import java.util.Optional;
 
 
 public interface UserDAO {

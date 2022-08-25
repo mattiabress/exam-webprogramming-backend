@@ -2,8 +2,9 @@ package it.units.studenti.mattiabressan.examwebprogramming.rest.model;
 
 
 //import javax.json.JsonObject;
+
 import com.google.gson.internal.LinkedTreeMap;
-import org.codehaus.jettison.json.JSONObject;
+
 import java.sql.Date;
 
 public class Trip {

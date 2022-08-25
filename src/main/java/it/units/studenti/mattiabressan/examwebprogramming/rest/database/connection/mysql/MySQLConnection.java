@@ -2,7 +2,6 @@ package it.units.studenti.mattiabressan.examwebprogramming.rest.database.connect
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.internal.LinkedTreeMap;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.config.DbConfig;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.TripDAO;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.TripDAOFactory;
@@ -11,11 +10,9 @@ import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.User
 import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.mysql.MySQLTripDAO;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.model.Trip;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.model.User;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.restapi.ResponseBuilder;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.security.PasswordSecurity;
 import org.apache.log4j.Logger;
 
-import javax.ws.rs.core.Response;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.*;

@@ -1,8 +1,7 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.restapi;
 
-import org.glassfish.jersey.server.ResourceConfig;
-
 import it.units.studenti.mattiabressan.examwebprogramming.rest.filter.AuthenticationFilter;
+import org.glassfish.jersey.server.ResourceConfig;
 
 /**
  * set the filter applications manually and not via web.xml

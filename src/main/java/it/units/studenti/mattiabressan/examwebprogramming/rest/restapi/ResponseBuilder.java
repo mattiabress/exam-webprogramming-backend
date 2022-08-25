@@ -1,15 +1,13 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.restapi;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.ws.rs.core.Response;
-
+import it.units.studenti.mattiabressan.examwebprogramming.rest.model.JsonSerializable;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import it.units.studenti.mattiabressan.examwebprogramming.rest.model.JsonSerializable;
+import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.Map;
 
 public class ResponseBuilder {
 

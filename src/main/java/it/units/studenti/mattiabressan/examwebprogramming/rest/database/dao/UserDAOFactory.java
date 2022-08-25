@@ -3,7 +3,6 @@ package it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.config.DbConfig;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.database.connection.Connection;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.database.connection.ConnectionFactory;
-//import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.gremlin.GremlinUserDAO;
 import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.mysql.MySQLUserDAO;
 //import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.sqlite.SqlUserDAO;
 

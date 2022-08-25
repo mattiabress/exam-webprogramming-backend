@@ -1,6 +1,19 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.restapi;
 
-import java.util.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.UserDAO;
+import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.UserDAOFactory;
+import it.units.studenti.mattiabressan.examwebprogramming.rest.exception.UserExistingException;
+import it.units.studenti.mattiabressan.examwebprogramming.rest.exception.UserNotFoundException;
+import it.units.studenti.mattiabressan.examwebprogramming.rest.filter.AuthenticationFilter;
+import it.units.studenti.mattiabressan.examwebprogramming.rest.model.Credentials;
+import it.units.studenti.mattiabressan.examwebprogramming.rest.model.JsonSerializable;
+import it.units.studenti.mattiabressan.examwebprogramming.rest.model.User;
+import it.units.studenti.mattiabressan.examwebprogramming.rest.model.UserSecurity;
+import it.units.studenti.mattiabressan.examwebprogramming.rest.security.PasswordSecurity;
+import it.units.studenti.mattiabressan.examwebprogramming.rest.security.TokenSecurity;
+import org.glassfish.jersey.server.ResourceConfig;
 
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.PermitAll;
@@ -10,23 +23,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import org.eclipse.collections.impl.lazy.parallel.set.sorted.SelectSortedSetBatch;
-import org.glassfish.jersey.server.ResourceConfig;
-
-import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.UserDAO;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.UserDAOFactory;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.exception.UserNotFoundException;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.exception.UserExistingException;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.filter.AuthenticationFilter;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.model.Credentials;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.model.JsonSerializable;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.model.User;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.model.UserSecurity;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.security.PasswordSecurity;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.security.TokenSecurity;
+import java.util.*;
 
 @DeclareRoles({"admin", "user", "guest"})
 @Path("/user")

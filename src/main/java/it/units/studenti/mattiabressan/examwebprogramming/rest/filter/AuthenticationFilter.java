@@ -1,7 +1,13 @@
 package it.units.studenti.mattiabressan.examwebprogramming.rest.filter;
 
-import java.lang.reflect.Method;
-import java.util.*;
+import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.UserDAO;
+import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.UserDAOFactory;
+import it.units.studenti.mattiabressan.examwebprogramming.rest.model.User;
+import it.units.studenti.mattiabressan.examwebprogramming.rest.model.UserSecurity;
+import it.units.studenti.mattiabressan.examwebprogramming.rest.restapi.ResponseBuilder;
+import it.units.studenti.mattiabressan.examwebprogramming.rest.security.TokenSecurity;
+import org.apache.log4j.Logger;
+import org.jose4j.jwt.consumer.InvalidJwtException;
 
 import javax.annotation.Priority;
 import javax.annotation.security.DenyAll;
@@ -14,17 +20,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
-
-import org.apache.log4j.Logger;
-import org.jose4j.jwt.consumer.InvalidJwtException;
-
-import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.UserDAO;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.database.dao.UserDAOFactory;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.exception.UserNotFoundException;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.model.User;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.model.UserSecurity;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.restapi.ResponseBuilder;
-import it.units.studenti.mattiabressan.examwebprogramming.rest.security.TokenSecurity;
+import java.lang.reflect.Method;
+import java.util.*;
 
 
 /**
