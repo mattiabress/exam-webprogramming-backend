@@ -21,7 +21,7 @@ public class MySQLTripDAO implements TripDAO {
     private static final String SELECT_ALL_TRIP = "SELECT `ID`,`NAME`,`TRIP_DATE`,`VEHICLE`,`PATH`,`ID_USER` FROM `trip`";
     private static final String SELECT_ALL_TRIP_BY_USERID = "SELECT `ID`,`NAME`,`TRIP_DATE`,`VEHICLE`,`PATH`,`ID_USER` FROM `trip` WHERE `ID_USER`=?";
     private static final String SELECT_TRIP_BY_ID = "SELECT `ID`,`NAME`,`TRIP_DATE`,`VEHICLE`,`PATH`,`ID_USER` FROM `trip` WHERE `ID`=?";
-    private static final String CREATE_TRIP_TABLE = "CREATE TABLE `webprogramming`.`trip` ( `ID` INT NOT NULL AUTO_INCREMENT , `NAME` VARCHAR(30) NOT NULL , `TRIP_DATE` DATE NOT NULL , `VEHICLE` VARCHAR(25) NOT NULL , `PATH` JSON NOT NULL ,`ID_USER` INT NOT NULL , PRIMARY KEY (`ID`)) ENGINE = InnoDB;";
+    public static final String CREATE_TRIP_TABLE = "CREATE TABLE `webprogramming`.`trip` ( `ID` INT NOT NULL AUTO_INCREMENT , `NAME` VARCHAR(30) NOT NULL , `TRIP_DATE` DATE NOT NULL , `VEHICLE` VARCHAR(25) NOT NULL , `PATH` JSON NOT NULL ,`ID_USER` INT NOT NULL , PRIMARY KEY (`ID`)) ENGINE = InnoDB;";
     private static final String DELETE_TRIP_BY_ID= "DELETE FROM `trip` WHERE `trip`.`ID` = ?";
 
     public MySQLTripDAO(it.units.studenti.mattiabressan.examwebprogramming.rest.database.connection.Connection connection) {
@@ -383,6 +383,7 @@ public class MySQLTripDAO implements TripDAO {
 
         return Optional.of(trip);
     }
+
 
 
 }

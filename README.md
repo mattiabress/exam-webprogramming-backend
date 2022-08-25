@@ -35,5 +35,6 @@
 * https://github.com/auth0/java-jwt
 * https://www.baeldung.com/java-connect-mysql
 * https://mkyong.com/java/how-to-parse-json-with-gson/
+* https://devops4solutions.com/deploy-a-tomcat-application-using-docker-compose/
 * 
 
